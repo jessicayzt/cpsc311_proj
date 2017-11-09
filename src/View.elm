@@ -43,10 +43,10 @@ elementGame game =
             image width height "../graphic/env/background.png"
 
         uiX =
-            -halfWidth + 90
+            -halfWidth + 100
 
         uiY =
-            halfHeight - 80
+            halfHeight - 70
 
         overlayForms =
             platformForms game.platforms
@@ -187,6 +187,6 @@ formatText : Text -> Element
 formatText text =
     text
         |> bold
-        |> Text.height 35
-        |> typeface [ "chiller", "courier" ]
+        |> Text.height 30
+        |> monospace
         |> leftAligned
