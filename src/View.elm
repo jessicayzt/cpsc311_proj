@@ -43,10 +43,10 @@ elementGame game =
             image width height "../graphic/env/background.png"
 
         uiX =
-            -halfWidth + 100
+            -halfWidth + 110
 
         uiY =
-            halfHeight - 70
+            halfHeight - 80
 
         overlayForms =
             platformForms game.platforms
