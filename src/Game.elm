@@ -50,12 +50,17 @@ update : Msg -> Game -> ( Game, Cmd Msg )
 update msg game =
     case msg of
         TimeUpdate newTime ->
-            if game.state == Playing && List.length game.platforms < 15 then
-                ( updateGame game
-                , Random.generate NewPlatform platformGenerator
-                )
+            if game.state == Playing then
+                if List.length game.platforms < 15 then
+                    ( updateGame game
+                    , Random.generate NewPlatform platformGenerator
+                    )
+                else
+                    ( updateGame game
+                    , Cmd.none
+                    )
             else
-                ( updateGame game
+                ( game
                 , Cmd.none
                 )
 
