@@ -2,6 +2,8 @@
 
 ## A platform game written in Elm. Play here: Link TBA
 
+![](/graphic/screenshot.png?raw=true)
+
 ### Directions
 
 - Left Arrow Key - Go left
