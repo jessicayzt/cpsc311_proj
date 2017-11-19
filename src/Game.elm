@@ -68,7 +68,6 @@ update msg game =
             if game.state == Playing then
                 ( { game
                     | avatar = keyDown keyCode game.avatar game.platforms
-                    , score = updateScore game keyCode
                   }
                 , Cmd.none
                 )
@@ -102,6 +101,11 @@ updateGame game =
             else
                 game.platforms
         , avatar = updateAvatar game game.platforms
+        , score =
+            if isSideScrolling game.avatar && game.avatar.vx /= 0 then
+                updateScore game
+            else
+                game.score
     }
 
 
@@ -162,14 +166,9 @@ isCollidingUnit avatar platform =
     Basics.abs (platform.x - avatar.x) <= 20
 
 
-updateScore : Game -> KeyCode -> Int
-updateScore game keyCode =
-    case Key.fromCode keyCode of
-        RightArrowKey ->
-            game.score + 1
-
-        _ ->
-            game.score
+updateScore : Game -> Int
+updateScore game =
+    game.score + 1
 
 
 keyDown : KeyCode -> Avatar -> List GamePlatform -> Avatar
