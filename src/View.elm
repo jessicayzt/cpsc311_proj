@@ -43,7 +43,7 @@ elementGame game =
             image width height "../graphic/env/background.png"
 
         uiX =
-            -halfWidth + 110
+            -halfWidth + 150
 
         uiY =
             halfHeight - 80
@@ -171,7 +171,16 @@ uiContent game =
         ++ "\nSPEED X "
         ++ toString game.avatar.speedMultiplier
         ++ "\nSCORE : "
-        ++ toString game.score
+        ++ getScoreString game.score
+
+
+getScoreString : Int -> String
+getScoreString score =
+    let
+        scoreString =
+            toString score
+    in
+    repeat (6 - length scoreString) "0" ++ scoreString
 
 
 gameOverForm : Form
