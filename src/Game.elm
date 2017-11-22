@@ -9,7 +9,7 @@ import Task exposing (..)
 import Time exposing (Time, second)
 import ViewUtil exposing (..)
 import Window exposing (Size)
-
+import List.Extra exposing (replaceIf)
 
 type State
     = Playing
@@ -89,25 +89,32 @@ update msg game =
 
 updateGame : Game -> Game
 updateGame game =
-    { game
-        | state =
-            if game.avatar.hp <= 0 then
-                Over
-            else
-                Playing
-        , platforms =
-            if isSideScrolling game.avatar && game.avatar.vx /= 0 then
-                List.map ((\platform -> platform game.avatar) scrollPlatform) (List.filter (\platform -> platform.x > -ViewUtil.width) game.platforms)
-            else
-                game.platforms
-        , avatar = updateAvatar game game.platforms
-        , score =
-            if isSideScrolling game.avatar && game.avatar.vx /= 0 then
-                updateScore game
-            else
-                game.score
-    }
-
+  let
+      currentPlatform =
+          List.head (List.filter ((\platform -> platform game.avatar) onGivenPlatform) game.platforms)
+      updatedPlatforms =
+        if isCollidingUnit game.avatar currentPlatform && hasCollectible currentPlatform then
+          case currentPlatform of
+            Just currentPlatform ->
+              replaceIf (\platform -> platform == currentPlatform) (removeCollectible currentPlatform) game.platforms
+            Nothing -> game.platforms
+        else
+          game.platforms
+  in
+  { game
+      | state =
+          if game.avatar.hp <= 0 then
+              Over
+          else
+              Playing
+      , platforms =
+          if isSideScrolling game.avatar && game.avatar.vx /= 0 then
+              List.map ((\platform -> platform game.avatar) scrollPlatform) (List.filter (\platform -> platform.x > -ViewUtil.width) updatedPlatforms)
+          else
+              updatedPlatforms
+      , avatar = updateAvatar game currentPlatform
+      , score = updateScore game currentPlatform
+  }
 
 scrollPlatform : Avatar -> GamePlatform -> GamePlatform
 scrollPlatform avatar platform =
@@ -116,60 +123,60 @@ scrollPlatform avatar platform =
             platform.x + -avatar.vx
     }
 
+updateAvatar : Game -> Maybe GamePlatform -> Avatar
+updateAvatar game platform =
+      game.avatar
+          |> constrainLeftEdge
+          |> gravity platform
+          |> physics
+          |> status platform
 
-updateAvatar : Game -> List GamePlatform -> Avatar
-updateAvatar game platforms =
-    game.avatar
-        |> constrainLeftEdge
-        |> gravity platforms
-        |> physics
-        |> status platforms
-
-
-status : List GamePlatform -> Avatar -> Avatar
-status platforms avatar =
+status : Maybe GamePlatform -> Avatar -> Avatar
+status platform avatar =
     { avatar
-        | hp = updateHp platforms avatar
+        | hp = updateHp platform avatar
     }
 
 
-updateHp : List GamePlatform -> Avatar -> Int
-updateHp platforms avatar =
-    let
-        currentPlatform =
-            List.head (List.filter ((\platform -> platform avatar) onGivenPlatform) platforms)
-    in
-    case currentPlatform of
-        Just platform ->
-            if isCollidingUnit avatar platform then
-                case platform.unit of
-                    Spikes ->
-                        max (avatar.hp - 1) 0
-
-                    Waste ->
-                        max (avatar.hp - 10) 0
-
-                    None ->
-                        avatar.hp
-            else
-                avatar.hp
-
-        Nothing ->
-            if avatar.y < ViewUtil.pit then
-                0
-            else
-                avatar.hp
+updateHp : Maybe GamePlatform -> Avatar -> Int
+updateHp platform avatar =
+    if isCollidingUnit avatar platform then
+        case platform of
+          Just platform ->
+            case platform.unit of
+              Spikes -> max (avatar.hp - 1) 0
+              Waste -> max (avatar.hp - 10) 0
+              Health -> avatar.hp + 10
+              _ -> avatar.hp
+          Nothing ->
+            avatar.hp
+    else if avatar.y < ViewUtil.pit then
+        0
+    else
+        avatar.hp
 
 
-isCollidingUnit : Avatar -> GamePlatform -> Bool
+isCollidingUnit : Avatar -> Maybe GamePlatform -> Bool
 isCollidingUnit avatar platform =
-    Basics.abs (platform.x - avatar.x) <= 20
+    case platform of
+      Just platform -> Basics.abs (platform.x - avatar.x) <= 20
+      Nothing -> False
 
-
-updateScore : Game -> Int
-updateScore game =
-    game.score + 1
-
+updateScore : Game -> Maybe GamePlatform -> Int
+updateScore game platform =
+    if isCollidingUnit game.avatar platform then
+      case platform of
+        Just platform ->
+          case platform.unit of
+            TwoBones -> game.score + 50
+            ThreeBones -> game.score + 100
+            _ -> game.score
+        Nothing ->
+          game.score
+    else if isSideScrolling game.avatar && game.avatar.vx /= 0 then
+      game.score + 1
+    else
+      game.score
 
 keyDown : KeyCode -> Avatar -> List GamePlatform -> Avatar
 keyDown keyCode avatar platforms =

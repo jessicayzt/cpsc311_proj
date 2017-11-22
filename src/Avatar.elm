@@ -78,15 +78,21 @@ constrainLeftEdge avatar =
     }
 
 
-gravity : List GamePlatform -> Avatar -> Avatar
-gravity platforms avatar =
-    { avatar
-        | vy =
-            if avatar.vy <= 0 && onPlatform avatar platforms then
-                0
-            else
-                avatar.vy - 1 / 4
-    }
+gravity : Maybe GamePlatform -> Avatar -> Avatar
+gravity platform avatar =
+  case platform of
+    Just platform ->
+      { avatar
+          | vy =
+              if avatar.vy <= 0 then
+                  0
+              else
+                  avatar.vy - 1 / 4
+      }
+    Nothing ->
+      { avatar
+        | vy = avatar.vy - 1 / 4
+      }
 
 
 onPlatform : Avatar -> List GamePlatform -> Bool

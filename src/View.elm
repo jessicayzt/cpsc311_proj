@@ -104,8 +104,14 @@ platformUnitForm platform =
         unit =
             if platform.unit == Spikes then
                 "spikes"
-            else
+            else if platform.unit == Waste then
                 "nuclear_waste"
+            else if platform.unit == Health then
+                "collectible/health"
+            else if platform.unit == TwoBones then
+                "collectible/bones_2"
+            else
+                "collectible/bones_3"
 
         src =
             "../graphic/env/" ++ unit ++ ".png"
