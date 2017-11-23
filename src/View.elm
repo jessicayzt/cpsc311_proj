@@ -42,10 +42,10 @@ elementGame game =
         background =
             image width height "../graphic/env/background.png"
 
-        uiX =
+        textX =
             -halfWidth + 150
 
-        uiY =
+        textY =
             halfHeight - 80
 
         overlayForms =
@@ -54,9 +54,9 @@ elementGame game =
                 ++ [ avatarElement game
                         |> toForm
                         |> move ( game.avatar.x, game.avatar.y )
-                   , uiElement game
+                   , textElement game
                         |> toForm
-                        |> move ( uiX, uiY )
+                        |> move ( textX, textY )
                    ]
 
         toRender =
@@ -103,11 +103,11 @@ platformUnitForm platform =
 
         unit =
             if platform.unit == Spikes then
-                "spikes"
+                "hazard/spikes"
             else if platform.unit == Waste then
-                "nuclear_waste"
-            else if platform.unit == Health then
-                "collectible/health"
+                "hazard/nuclear_waste"
+            else if platform.unit == HP then
+                "collectible/hp"
             else if platform.unit == TwoBones then
                 "collectible/bones_2"
             else
@@ -163,25 +163,25 @@ avatarElement game =
         image avatarWidth avatarHeight src
 
 
-uiElement : Game -> Element
-uiElement game =
-    Text.fromString (uiContent game)
+textElement : Game -> Element
+textElement game =
+    Text.fromString (content game)
         |> Text.color Color.white
         |> formatText
 
 
-uiContent : Game -> String
-uiContent game =
+content : Game -> String
+content game =
     "HP : "
         ++ toString game.avatar.hp
         ++ "\nSPEED X "
         ++ toString game.avatar.speedMultiplier
         ++ "\nSCORE : "
-        ++ getScoreString game.score
+        ++ scoreString game.score
 
 
-getScoreString : Int -> String
-getScoreString score =
+scoreString : Int -> String
+scoreString score =
     let
         scoreString =
             toString score

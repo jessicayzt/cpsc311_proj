@@ -33,7 +33,7 @@ type alias PlatformToGenerate =
 type Unit
     = Spikes
     | Waste
-    | Health
+    | HP
     | TwoBones
     | ThreeBones
     | None
@@ -56,23 +56,24 @@ platformHeightDiffGenerator =
 
 unitGenerator : Generator Unit
 unitGenerator =
-    Random.map assignUnit (Random.int 0 20)
+    Random.map assignUnit (Random.int 1 20)
 
 
 assignUnit : Int -> Unit
 assignUnit generated =
-    if generated < 4 then
-      Spikes
-    else if generated < 7 then
-      Waste
-    else if generated < 11 then
-      TwoBones
-    else if generated < 14 then
-      ThreeBones
-    else if generated < 15 then
-      Health
+    if generated <= 4 then
+        Spikes
+    else if generated <= 7 then
+        Waste
+    else if generated <= 11 then
+        TwoBones
+    else if generated <= 14 then
+        ThreeBones
+    else if generated <= 15 then
+        HP
     else
-      None
+        None
+
 
 extendPlatforms : PlatformToGenerate -> List GamePlatform -> List GamePlatform
 extendPlatforms newPlatform platforms =
@@ -98,18 +99,28 @@ generatePlatform newPlatform previousPlatform =
     else
         groundExtension
 
-removeCollectible: GamePlatform -> GamePlatform
-removeCollectible prevPlatform  =
-      GamePlatform prevPlatform.w prevPlatform.x prevPlatform.y None
 
-hasCollectible: Maybe GamePlatform -> Bool
+removeCollectible : GamePlatform -> GamePlatform
+removeCollectible prevPlatform =
+    GamePlatform prevPlatform.w prevPlatform.x prevPlatform.y None
+
+
+hasCollectible : Maybe GamePlatform -> Bool
 hasCollectible platform =
-  case platform of
-    Just platform ->
-      case platform.unit of
-        Health -> True
-        TwoBones -> True
-        ThreeBones -> True
-        _ -> False
-    Nothing ->
-      False
+    case platform of
+        Just platform ->
+            case platform.unit of
+                HP ->
+                    True
+
+                TwoBones ->
+                    True
+
+                ThreeBones ->
+                    True
+
+                _ ->
+                    False
+
+        Nothing ->
+            False
