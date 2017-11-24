@@ -1,0 +1,219 @@
+var _user$project$Game$keyUp = F2(
+	function (keyCode, avatar) {
+		var _p0 = _user$project$Key$fromCode(keyCode);
+		switch (_p0.ctor) {
+			case 'LeftArrowKey':
+				return A2(_user$project$Avatar$walk, 0, avatar);
+			case 'RightArrowKey':
+				return A2(_user$project$Avatar$walk, 0, avatar);
+			default:
+				return avatar;
+		}
+	});
+var _user$project$Game$keyDown = F3(
+	function (keyCode, avatar, platforms) {
+		var _p1 = _user$project$Key$fromCode(keyCode);
+		switch (_p1.ctor) {
+			case 'LeftArrowKey':
+				return A2(_user$project$Avatar$walk, 0 - _user$project$Avatar$defaultSpeed, avatar);
+			case 'RightArrowKey':
+				return A2(_user$project$Avatar$walk, _user$project$Avatar$defaultSpeed, avatar);
+			case 'SpaceBar':
+				return A2(_user$project$Avatar$jump, avatar, platforms);
+			default:
+				return avatar;
+		}
+	});
+var _user$project$Game$updateScore = F2(
+	function (game, keyCode) {
+		var _p2 = _user$project$Key$fromCode(keyCode);
+		if (_p2.ctor === 'RightArrowKey') {
+			return game.score + 1;
+		} else {
+			return game.score;
+		}
+	});
+var _user$project$Game$isCollidingUnit = F2(
+	function (avatar, platform) {
+		return _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$abs(platform.x - avatar.x),
+			10) < 1;
+	});
+var _user$project$Game$updateHp = F2(
+	function (platforms, avatar) {
+		var currentPlatform = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (platform) {
+					return platform(avatar);
+				}(_user$project$Avatar$onGivenPlatform),
+				platforms));
+		var _p3 = currentPlatform;
+		if (_p3.ctor === 'Just') {
+			var _p5 = _p3._0;
+			if (A2(_user$project$Game$isCollidingUnit, avatar, _p5)) {
+				var _p4 = _p5.unit;
+				switch (_p4.ctor) {
+					case 'Spikes':
+						return A2(_elm_lang$core$Basics$max, avatar.hp - 1, 0);
+					case 'Waste':
+						return A2(_elm_lang$core$Basics$max, avatar.hp - 10, 0);
+					default:
+						return avatar.hp;
+				}
+			} else {
+				return avatar.hp;
+			}
+		} else {
+			return (_elm_lang$core$Native_Utils.cmp(avatar.y, _user$project$ViewUtil$pit) < 0) ? 0 : avatar.hp;
+		}
+	});
+var _user$project$Game$status = F2(
+	function (platforms, avatar) {
+		return _elm_lang$core$Native_Utils.update(
+			avatar,
+			{
+				hp: A2(_user$project$Game$updateHp, platforms, avatar)
+			});
+	});
+var _user$project$Game$updateAvatar = F2(
+	function (game, platforms) {
+		return A2(
+			_user$project$Game$status,
+			platforms,
+			_user$project$Avatar$physics(
+				A2(
+					_user$project$Avatar$gravity,
+					platforms,
+					_user$project$Avatar$constrainLeftEdge(game.avatar))));
+	});
+var _user$project$Game$scrollPlatform = F2(
+	function (avatar, platform) {
+		return _elm_lang$core$Native_Utils.update(
+			platform,
+			{x: platform.x + (0 - avatar.vx)});
+	});
+var _user$project$Game$Game = F5(
+	function (a, b, c, d, e) {
+		return {size: a, state: b, platforms: c, avatar: d, score: e};
+	});
+var _user$project$Game$Over = {ctor: 'Over'};
+var _user$project$Game$Playing = {ctor: 'Playing'};
+var _user$project$Game$updateGame = function (game) {
+	return _elm_lang$core$Native_Utils.update(
+		game,
+		{
+			state: (_elm_lang$core$Native_Utils.cmp(game.avatar.hp, 0) < 1) ? _user$project$Game$Over : _user$project$Game$Playing,
+			platforms: (_user$project$Avatar$isSideScrolling(game.avatar) && (!_elm_lang$core$Native_Utils.eq(game.avatar.vx, 0))) ? A2(
+				_elm_lang$core$List$map,
+				function (platform) {
+					return platform(game.avatar);
+				}(_user$project$Game$scrollPlatform),
+				A2(
+					_elm_lang$core$List$filter,
+					function (platform) {
+						return _elm_lang$core$Native_Utils.cmp(platform.x, 0 - _user$project$ViewUtil$width) > 0;
+					},
+					game.platforms)) : game.platforms,
+			avatar: A2(_user$project$Game$updateAvatar, game, game.platforms)
+		});
+};
+var _user$project$Game$NoOp = {ctor: 'NoOp'};
+var _user$project$Game$Resize = function (a) {
+	return {ctor: 'Resize', _0: a};
+};
+var _user$project$Game$initGame = {
+	ctor: '_Tuple2',
+	_0: {
+		size: A2(_elm_lang$window$Window$Size, 0, 0),
+		state: _user$project$Game$Playing,
+		platforms: {
+			ctor: '::',
+			_0: _user$project$GamePlatform$init,
+			_1: {
+				ctor: '::',
+				_0: _user$project$GamePlatform$ground,
+				_1: {ctor: '[]'}
+			}
+		},
+		avatar: _user$project$Avatar$initialAvatar,
+		score: 0
+	},
+	_1: A2(_elm_lang$core$Task$perform, _user$project$Game$Resize, _elm_lang$window$Window$size)
+};
+var _user$project$Game$NewPlatform = function (a) {
+	return {ctor: 'NewPlatform', _0: a};
+};
+var _user$project$Game$update = F2(
+	function (msg, game) {
+		var _p6 = msg;
+		switch (_p6.ctor) {
+			case 'TimeUpdate':
+				return (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Game$Playing) && (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$List$length(game.platforms),
+					15) < 0)) ? {
+					ctor: '_Tuple2',
+					_0: _user$project$Game$updateGame(game),
+					_1: A2(_elm_lang$core$Random$generate, _user$project$Game$NewPlatform, _user$project$GamePlatform$platformGenerator)
+				} : {
+					ctor: '_Tuple2',
+					_0: _user$project$Game$updateGame(game),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'KeyDown':
+				var _p7 = _p6._0;
+				return _elm_lang$core$Native_Utils.eq(game.state, _user$project$Game$Playing) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						game,
+						{
+							avatar: A3(_user$project$Game$keyDown, _p7, game.avatar, game.platforms),
+							score: A2(_user$project$Game$updateScore, game, _p7)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {ctor: '_Tuple2', _0: game, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'KeyUp':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						game,
+						{
+							avatar: A2(_user$project$Game$keyUp, _p6._0, game.avatar)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'NewPlatform':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						game,
+						{
+							platforms: A2(_user$project$GamePlatform$extendPlatforms, _p6._0, game.platforms)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Resize':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						game,
+						{size: _p6._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _user$project$Game$updateGame(game),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
+var _user$project$Game$KeyUp = function (a) {
+	return {ctor: 'KeyUp', _0: a};
+};
+var _user$project$Game$KeyDown = function (a) {
+	return {ctor: 'KeyDown', _0: a};
+};
+var _user$project$Game$TimeUpdate = function (a) {
+	return {ctor: 'TimeUpdate', _0: a};
+};

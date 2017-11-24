@@ -18,9 +18,8 @@ subscriptions game =
         , Keyboard.downs KeyDown
         , Keyboard.ups KeyUp
         , Window.resizes Resize
+        , AnimationFrame.diffs TimeUpdate
         ]
-
-
 
 -- MAIN
 
@@ -29,7 +28,7 @@ main : Program Never Game Msg
 main =
     Html.program
         { init = initGame
-        , view = view
-        , update = update
         , subscriptions = subscriptions
+        , update = update
+        , view = view 
         }

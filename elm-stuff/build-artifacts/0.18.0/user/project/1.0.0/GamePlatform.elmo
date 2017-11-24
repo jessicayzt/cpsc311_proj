@@ -1,0 +1,50 @@
+var _user$project$GamePlatform$platformHeightDiffGenerator = A2(_elm_lang$core$Random$float, 90, 120);
+var _user$project$GamePlatform$platformWidthGenerator = A2(_elm_lang$core$Random$float, 100, 400);
+var _user$project$GamePlatform$GamePlatform = F4(
+	function (a, b, c, d) {
+		return {w: a, x: b, y: c, unit: d};
+	});
+var _user$project$GamePlatform$generatePlatform = F2(
+	function (newPlatform, previousPlatform) {
+		var groundExtension = A4(_user$project$GamePlatform$GamePlatform, _user$project$ViewUtil$width / 2, previousPlatform.x + _user$project$ViewUtil$platformGap, (0 - _user$project$ViewUtil$halfHeight) + (_user$project$ViewUtil$platformHeight / 2), newPlatform.unit);
+		var newPlatformY = previousPlatform.y + newPlatform.heightDiff;
+		return (_elm_lang$core$Native_Utils.cmp(newPlatformY, _user$project$ViewUtil$halfHeight / 2) < 0) ? A4(_user$project$GamePlatform$GamePlatform, newPlatform.w, previousPlatform.x + _user$project$ViewUtil$platformGap, newPlatformY, newPlatform.unit) : groundExtension;
+	});
+var _user$project$GamePlatform$extendPlatforms = F2(
+	function (newPlatform, platforms) {
+		var _p0 = _elm_lang$core$List$head(platforms);
+		if (_p0.ctor === 'Just') {
+			return {
+				ctor: '::',
+				_0: A2(_user$project$GamePlatform$generatePlatform, newPlatform, _p0._0),
+				_1: platforms
+			};
+		} else {
+			return platforms;
+		}
+	});
+var _user$project$GamePlatform$PlatformToGenerate = F3(
+	function (a, b, c) {
+		return {w: a, heightDiff: b, unit: c};
+	});
+var _user$project$GamePlatform$None = {ctor: 'None'};
+var _user$project$GamePlatform$Waste = {ctor: 'Waste'};
+var _user$project$GamePlatform$Spikes = {ctor: 'Spikes'};
+var _user$project$GamePlatform$ground = A4(_user$project$GamePlatform$GamePlatform, _user$project$ViewUtil$width / 2, 0 - _user$project$ViewUtil$halfWidth, (0 - _user$project$ViewUtil$halfHeight) + (_user$project$ViewUtil$platformHeight / 2), _user$project$GamePlatform$Spikes);
+var _user$project$GamePlatform$init = A4(_user$project$GamePlatform$GamePlatform, 200, (0 - _user$project$ViewUtil$halfWidth) / 2, (0 - _user$project$ViewUtil$halfHeight) / 2, _user$project$GamePlatform$Spikes);
+var _user$project$GamePlatform$assignUnit = function (generated) {
+	var _p1 = generated;
+	switch (_p1) {
+		case 0:
+			return _user$project$GamePlatform$Spikes;
+		case 1:
+			return _user$project$GamePlatform$Waste;
+		default:
+			return _user$project$GamePlatform$None;
+	}
+};
+var _user$project$GamePlatform$unitGenerator = A2(
+	_elm_lang$core$Random$map,
+	_user$project$GamePlatform$assignUnit,
+	A2(_elm_lang$core$Random$int, 0, 2));
+var _user$project$GamePlatform$platformGenerator = A4(_elm_lang$core$Random$map3, _user$project$GamePlatform$PlatformToGenerate, _user$project$GamePlatform$platformWidthGenerator, _user$project$GamePlatform$platformHeightDiffGenerator, _user$project$GamePlatform$unitGenerator);

@@ -1,0 +1,12 @@
+var _user$project$ViewUtil$platformGap = 150;
+var _user$project$ViewUtil$leftBuffer = 100;
+var _user$project$ViewUtil$platformBuffer = 70;
+var _user$project$ViewUtil$platformHeight = 40;
+var _user$project$ViewUtil$height = 570;
+var _user$project$ViewUtil$halfHeight = _user$project$ViewUtil$height / 2;
+var _user$project$ViewUtil$onGround = ((0 - _user$project$ViewUtil$halfHeight) + (_user$project$ViewUtil$platformHeight / 2)) + _user$project$ViewUtil$platformBuffer;
+var _user$project$ViewUtil$pit = (0 - _user$project$ViewUtil$halfHeight) - _user$project$ViewUtil$platformBuffer;
+var _user$project$ViewUtil$width = 1000;
+var _user$project$ViewUtil$halfWidth = _user$project$ViewUtil$width / 2;
+var _user$project$ViewUtil$left = (0 - _user$project$ViewUtil$halfWidth) + _user$project$ViewUtil$leftBuffer;
+var _user$project$ViewUtil$twiceWidth = _user$project$ViewUtil$width * 2;

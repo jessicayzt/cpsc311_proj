@@ -129,7 +129,7 @@ physics avatar =
     { avatar
         | x =
             if isSideScrolling avatar then
-                0
+                avatar.x
             else
                 avatar.x + avatar.vx
         , y = avatar.y + avatar.vy

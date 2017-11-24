@@ -80,7 +80,7 @@ update msg game =
             ( { game | size = size }, Cmd.none )
 
         NoOp ->
-            ( game, Cmd.none )
+            ( updateGame game, Cmd.none )
 
 
 updateGame : Game -> Game
@@ -154,7 +154,7 @@ updateHp platforms avatar =
 
 isCollidingUnit : Avatar -> GamePlatform -> Bool
 isCollidingUnit avatar platform =
-    Basics.abs (platform.x - avatar.x) <= 20
+    Basics.abs (platform.x - avatar.x) <= 10
 
 
 updateScore : Game -> KeyCode -> Int

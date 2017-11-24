@@ -1,0 +1,808 @@
+var _user$project$View$formatText = function (text) {
+	return _evancz$elm_graphics$Element$leftAligned(
+		_evancz$elm_graphics$Text$monospace(
+			A2(
+				_evancz$elm_graphics$Text$height,
+				30,
+				_evancz$elm_graphics$Text$bold(text))));
+};
+var _user$project$View$gameOverForm = _evancz$elm_graphics$Collage$toForm(
+	_user$project$View$formatText(
+		A2(
+			_evancz$elm_graphics$Text$color,
+			_elm_lang$core$Color$orange,
+			_evancz$elm_graphics$Text$fromString('Game Over!\nPress F5 to play again.'))));
+var _user$project$View$uiContent = function (game) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'HP : ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(game.avatar.hp),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'\nSPEED X ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(game.avatar.speedMultiplier),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'\nSCORE : ',
+						_elm_lang$core$Basics$toString(game.score))))));
+};
+var _user$project$View$uiElement = function (game) {
+	return _user$project$View$formatText(
+		A2(
+			_evancz$elm_graphics$Text$color,
+			_elm_lang$core$Color$white,
+			_evancz$elm_graphics$Text$fromString(
+				_user$project$View$uiContent(game))));
+};
+var _user$project$View$avatarForm = function (game) {
+	var leftdie = '../graphic/avatar/die/left.gif';
+	var rightdie = '../graphic/avatar/die/right.gif';
+	var leftidle = '../graphic/avatar/idle/left.gif';
+	var rightidle = '../graphic/avatar/idle/right.gif';
+	var leftjump = '../graphic/avatar/jump/left.gif';
+	var rightjump = '../graphic/avatar/jump/right.gif';
+	var leftwalk = '../graphic/avatar/walk/left.gif';
+	var rightwalk = '../graphic/avatar/walk/right.gif';
+	var avatarHeight = 153;
+	var avatarWidth = 116;
+	if (_elm_lang$core$Native_Utils.cmp(game.avatar.hp, 0) < 1) {
+		var _p0 = game.avatar.dir;
+		if (_p0.ctor === 'Left') {
+			return _evancz$elm_graphics$Collage$group(
+				{
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$alpha,
+						0,
+						_evancz$elm_graphics$Collage$toForm(
+							A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_evancz$elm_graphics$Collage$alpha,
+							0,
+							_evancz$elm_graphics$Collage$toForm(
+								A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$alpha,
+								0,
+								_evancz$elm_graphics$Collage$toForm(
+									A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+											_1: _elm_lang$core$List$singleton(
+												A2(
+													_evancz$elm_graphics$Collage$alpha,
+													1,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+										}
+									}
+								}
+							}
+						}
+					}
+				});
+		} else {
+			return _evancz$elm_graphics$Collage$group(
+				{
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$alpha,
+						0,
+						_evancz$elm_graphics$Collage$toForm(
+							A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_evancz$elm_graphics$Collage$alpha,
+							0,
+							_evancz$elm_graphics$Collage$toForm(
+								A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$alpha,
+								0,
+								_evancz$elm_graphics$Collage$toForm(
+									A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												1,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+											_1: _elm_lang$core$List$singleton(
+												A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+										}
+									}
+								}
+							}
+						}
+					}
+				});
+		}
+	} else {
+		if (!_elm_lang$core$Native_Utils.eq(
+			A2(_user$project$Avatar$onPlatform, game.avatar, game.platforms),
+			true)) {
+			var _p1 = game.avatar.dir;
+			if (_p1.ctor === 'Left') {
+				return _evancz$elm_graphics$Collage$group(
+					{
+						ctor: '::',
+						_0: A2(
+							_evancz$elm_graphics$Collage$alpha,
+							0,
+							_evancz$elm_graphics$Collage$toForm(
+								A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$alpha,
+								0,
+								_evancz$elm_graphics$Collage$toForm(
+									A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										1,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+												_1: _elm_lang$core$List$singleton(
+													A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+											}
+										}
+									}
+								}
+							}
+						}
+					});
+			} else {
+				return _evancz$elm_graphics$Collage$group(
+					{
+						ctor: '::',
+						_0: A2(
+							_evancz$elm_graphics$Collage$alpha,
+							0,
+							_evancz$elm_graphics$Collage$toForm(
+								A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$alpha,
+								0,
+								_evancz$elm_graphics$Collage$toForm(
+									A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									1,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+												_1: _elm_lang$core$List$singleton(
+													A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+											}
+										}
+									}
+								}
+							}
+						}
+					});
+			}
+		} else {
+			if (!_elm_lang$core$Native_Utils.eq(game.avatar.vx, 0)) {
+				if (_elm_lang$core$Native_Utils.cmp(game.avatar.speedMultiplier, 1.5) > -1) {
+					var _p2 = game.avatar.dir;
+					if (_p2.ctor === 'Left') {
+						return _evancz$elm_graphics$Collage$group(
+							{
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										1,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_evancz$elm_graphics$Collage$alpha,
+															0,
+															_evancz$elm_graphics$Collage$toForm(
+																A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+														_1: _elm_lang$core$List$singleton(
+															A2(
+																_evancz$elm_graphics$Collage$alpha,
+																0,
+																_evancz$elm_graphics$Collage$toForm(
+																	A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+													}
+												}
+											}
+										}
+									}
+								}
+							});
+					} else {
+						return _evancz$elm_graphics$Collage$group(
+							{
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									1,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_evancz$elm_graphics$Collage$alpha,
+															0,
+															_evancz$elm_graphics$Collage$toForm(
+																A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+														_1: _elm_lang$core$List$singleton(
+															A2(
+																_evancz$elm_graphics$Collage$alpha,
+																0,
+																_evancz$elm_graphics$Collage$toForm(
+																	A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+													}
+												}
+											}
+										}
+									}
+								}
+							});
+					}
+				} else {
+					var _p3 = game.avatar.dir;
+					if (_p3.ctor === 'Left') {
+						return _evancz$elm_graphics$Collage$group(
+							{
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										1,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_evancz$elm_graphics$Collage$alpha,
+															0,
+															_evancz$elm_graphics$Collage$toForm(
+																A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+														_1: _elm_lang$core$List$singleton(
+															A2(
+																_evancz$elm_graphics$Collage$alpha,
+																0,
+																_evancz$elm_graphics$Collage$toForm(
+																	A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+													}
+												}
+											}
+										}
+									}
+								}
+							});
+					} else {
+						return _evancz$elm_graphics$Collage$group(
+							{
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									1,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_evancz$elm_graphics$Collage$alpha,
+															0,
+															_evancz$elm_graphics$Collage$toForm(
+																A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+														_1: _elm_lang$core$List$singleton(
+															A2(
+																_evancz$elm_graphics$Collage$alpha,
+																0,
+																_evancz$elm_graphics$Collage$toForm(
+																	A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+													}
+												}
+											}
+										}
+									}
+								}
+							});
+					}
+				}
+			} else {
+				var _p4 = game.avatar.dir;
+				if (_p4.ctor === 'Left') {
+					return _evancz$elm_graphics$Collage$group(
+						{
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$alpha,
+								0,
+								_evancz$elm_graphics$Collage$toForm(
+									A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												0,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													1,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+													_1: _elm_lang$core$List$singleton(
+														A2(
+															_evancz$elm_graphics$Collage$alpha,
+															0,
+															_evancz$elm_graphics$Collage$toForm(
+																A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+												}
+											}
+										}
+									}
+								}
+							}
+						});
+				} else {
+					return _evancz$elm_graphics$Collage$group(
+						{
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$alpha,
+								0,
+								_evancz$elm_graphics$Collage$toForm(
+									A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightwalk))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$alpha,
+									0,
+									_evancz$elm_graphics$Collage$toForm(
+										A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftwalk))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$alpha,
+										0,
+										_evancz$elm_graphics$Collage$toForm(
+											A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightjump))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$alpha,
+											0,
+											_evancz$elm_graphics$Collage$toForm(
+												A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftjump))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$alpha,
+												1,
+												_evancz$elm_graphics$Collage$toForm(
+													A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, rightidle))),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$elm_graphics$Collage$alpha,
+													0,
+													_evancz$elm_graphics$Collage$toForm(
+														A3(_evancz$elm_graphics$Element$image, avatarWidth, avatarHeight, leftidle))),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$elm_graphics$Collage$alpha,
+														0,
+														_evancz$elm_graphics$Collage$toForm(
+															A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))),
+													_1: _elm_lang$core$List$singleton(
+														A2(
+															_evancz$elm_graphics$Collage$alpha,
+															0,
+															_evancz$elm_graphics$Collage$toForm(
+																A3(_evancz$elm_graphics$Element$image, avatarHeight, avatarHeight, rightdie))))
+												}
+											}
+										}
+									}
+								}
+							}
+						});
+				}
+			}
+		}
+	}
+};
+var _user$project$View$platformUnitForm = function (platform) {
+	var unit = _elm_lang$core$Native_Utils.eq(platform.unit, _user$project$GamePlatform$Spikes) ? 'spikes' : 'nuclear_waste';
+	var src = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'../graphic/env/',
+		A2(_elm_lang$core$Basics_ops['++'], unit, '.png'));
+	var unitHeight = 50;
+	var unitWidth = 50;
+	var element = A3(_evancz$elm_graphics$Element$image, unitWidth, unitHeight, src);
+	return A2(
+		_evancz$elm_graphics$Collage$move,
+		{ctor: '_Tuple2', _0: platform.x, _1: platform.y + 40},
+		_evancz$elm_graphics$Collage$toForm(element));
+};
+var _user$project$View$platformUnitForms = function (platforms) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$View$platformUnitForm,
+		A2(
+			_elm_lang$core$List$filter,
+			function (platform) {
+				return !_elm_lang$core$Native_Utils.eq(platform.unit, _user$project$GamePlatform$None);
+			},
+			platforms));
+};
+var _user$project$View$platformForm = function (platform) {
+	var platRect = A2(
+		_evancz$elm_graphics$Collage$filled,
+		_elm_lang$core$Color$darkGrey,
+		A2(_evancz$elm_graphics$Collage$rect, platform.w, _user$project$ViewUtil$platformHeight));
+	return A2(
+		_evancz$elm_graphics$Collage$move,
+		{ctor: '_Tuple2', _0: platform.x, _1: platform.y},
+		platRect);
+};
+var _user$project$View$platformForms = function (platforms) {
+	return A2(_elm_lang$core$List$map, _user$project$View$platformForm, platforms);
+};
+var _user$project$View$height = _elm_lang$core$Basics$truncate(_user$project$ViewUtil$height);
+var _user$project$View$width = _elm_lang$core$Basics$truncate(_user$project$ViewUtil$width);
+var _user$project$View$elementGame = function (game) {
+	var uiY = _user$project$ViewUtil$halfHeight - 80;
+	var uiX = (0 - _user$project$ViewUtil$halfWidth) + 110;
+	var overlayForms = A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$View$platformForms(game.platforms),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$View$platformUnitForms(game.platforms),
+			{
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_graphics$Collage$move,
+					{ctor: '_Tuple2', _0: uiX, _1: uiY},
+					_evancz$elm_graphics$Collage$toForm(
+						_user$project$View$uiElement(game))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$move,
+						{ctor: '_Tuple2', _0: game.avatar.x, _1: game.avatar.y},
+						_user$project$View$avatarForm(game)),
+					_1: {ctor: '[]'}
+				}
+			}));
+	var background = A3(_evancz$elm_graphics$Element$image, _user$project$View$width, _user$project$View$height, '../graphic/env/background.png');
+	var toRender = {
+		ctor: '::',
+		_0: _evancz$elm_graphics$Collage$toForm(background),
+		_1: overlayForms
+	};
+	return _elm_lang$core$Native_Utils.eq(game.state, _user$project$Game$Over) ? A3(
+		_evancz$elm_graphics$Collage$collage,
+		_user$project$View$width,
+		_user$project$View$height,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			toRender,
+			{
+				ctor: '::',
+				_0: _user$project$View$gameOverForm,
+				_1: {ctor: '[]'}
+			})) : A3(_evancz$elm_graphics$Collage$collage, _user$project$View$width, _user$project$View$height, toRender);
+};
+var _user$project$View$view = function (game) {
+	var view = _user$project$View$elementGame(game);
+	var _p5 = game.size;
+	var width = _p5.width;
+	var height = _p5.height;
+	return _evancz$elm_graphics$Element$toHtml(
+		A4(_evancz$elm_graphics$Element$container, width, height, _evancz$elm_graphics$Element$middle, view));
+};

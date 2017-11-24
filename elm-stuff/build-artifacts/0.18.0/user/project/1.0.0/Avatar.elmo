@@ -1,0 +1,76 @@
+var _user$project$Avatar$withinEdges = F2(
+	function (avatar, platform) {
+		var leftEdge = (platform.x - (platform.w / 2)) - 5;
+		var rightEdge = (platform.x + (platform.w / 2)) + 5;
+		return (_elm_lang$core$Native_Utils.cmp(avatar.x, rightEdge) < 1) && (_elm_lang$core$Native_Utils.cmp(avatar.x, leftEdge) > -1);
+	});
+var _user$project$Avatar$standingOn = F2(
+	function (avatar, platform) {
+		var platformStandingLevel = platform.y + _user$project$ViewUtil$platformBuffer;
+		return _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$abs(platformStandingLevel - avatar.y),
+			15) < 1;
+	});
+var _user$project$Avatar$onGivenPlatform = F2(
+	function (avatar, platform) {
+		return A2(_user$project$Avatar$standingOn, avatar, platform) && A2(_user$project$Avatar$withinEdges, avatar, platform);
+	});
+var _user$project$Avatar$onPlatform = F2(
+	function (avatar, platforms) {
+		return A2(
+			_elm_lang$core$List$any,
+			function (platform) {
+				return platform(avatar);
+			}(_user$project$Avatar$onGivenPlatform),
+			platforms);
+	});
+var _user$project$Avatar$gravity = F2(
+	function (platforms, avatar) {
+		return _elm_lang$core$Native_Utils.update(
+			avatar,
+			{
+				vy: ((_elm_lang$core$Native_Utils.cmp(avatar.vy, 0) < 1) && A2(_user$project$Avatar$onPlatform, avatar, platforms)) ? 0 : (avatar.vy - (1 / 4))
+			});
+	});
+var _user$project$Avatar$defaultSpeed = 6.0;
+var _user$project$Avatar$jumpVelocity = 8.0;
+var _user$project$Avatar$jump = F2(
+	function (avatar, platforms) {
+		return (_elm_lang$core$Native_Utils.eq(avatar.vy, 0) && A2(_user$project$Avatar$onPlatform, avatar, platforms)) ? _elm_lang$core$Native_Utils.update(
+			avatar,
+			{vy: _user$project$Avatar$jumpVelocity}) : avatar;
+	});
+var _user$project$Avatar$Avatar = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {x: a, y: b, vx: c, vy: d, dir: e, hp: f, speedMultiplier: g, invincible: h};
+	});
+var _user$project$Avatar$Right = {ctor: 'Right'};
+var _user$project$Avatar$initialAvatar = {x: _user$project$ViewUtil$left, y: _user$project$ViewUtil$onGround, vx: 0, vy: 0, dir: _user$project$Avatar$Right, hp: 100, speedMultiplier: 1.0, invincible: false};
+var _user$project$Avatar$isSideScrolling = function (avatar) {
+	return (_elm_lang$core$Native_Utils.cmp(avatar.x, 0) > -1) && _elm_lang$core$Native_Utils.eq(avatar.dir, _user$project$Avatar$Right);
+};
+var _user$project$Avatar$physics = function (avatar) {
+	return _elm_lang$core$Native_Utils.update(
+		avatar,
+		{
+			x: _user$project$Avatar$isSideScrolling(avatar) ? avatar.x : (avatar.x + avatar.vx),
+			y: avatar.y + avatar.vy
+		});
+};
+var _user$project$Avatar$Left = {ctor: 'Left'};
+var _user$project$Avatar$walk = F2(
+	function (newVx, avatar) {
+		return _elm_lang$core$Native_Utils.update(
+			avatar,
+			{
+				dir: (_elm_lang$core$Native_Utils.cmp(newVx, 0) < 0) ? _user$project$Avatar$Left : ((_elm_lang$core$Native_Utils.cmp(newVx, 0) > 0) ? _user$project$Avatar$Right : avatar.dir),
+				vx: newVx * avatar.speedMultiplier
+			});
+	});
+var _user$project$Avatar$constrainLeftEdge = function (avatar) {
+	return _elm_lang$core$Native_Utils.update(
+		avatar,
+		{
+			vx: (_elm_lang$core$Native_Utils.eq(avatar.x, 0 - _user$project$ViewUtil$halfWidth) && _elm_lang$core$Native_Utils.eq(avatar.dir, _user$project$Avatar$Left)) ? 0 : avatar.vx
+		});
+};

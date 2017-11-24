@@ -1,0 +1,26 @@
+var _user$project$Main$subscriptions = function (game) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _elm_lang$animation_frame$AnimationFrame$diffs(_user$project$Game$TimeUpdate),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$keyboard$Keyboard$downs(_user$project$Game$KeyDown),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$keyboard$Keyboard$ups(_user$project$Game$KeyUp),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$window$Window$resizes(_user$project$Game$Resize),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$animation_frame$AnimationFrame$diffs(_user$project$Game$TimeUpdate),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{init: _user$project$Game$initGame, subscriptions: _user$project$Main$subscriptions, update: _user$project$Game$update, view: _user$project$View$view})();

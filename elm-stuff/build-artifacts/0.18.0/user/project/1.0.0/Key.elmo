@@ -1,0 +1,17 @@
+var _user$project$Key$Unknown = {ctor: 'Unknown'};
+var _user$project$Key$SpaceBar = {ctor: 'SpaceBar'};
+var _user$project$Key$RightArrowKey = {ctor: 'RightArrowKey'};
+var _user$project$Key$LeftArrowKey = {ctor: 'LeftArrowKey'};
+var _user$project$Key$fromCode = function (keyCode) {
+	var _p0 = keyCode;
+	switch (_p0) {
+		case 37:
+			return _user$project$Key$LeftArrowKey;
+		case 39:
+			return _user$project$Key$RightArrowKey;
+		case 32:
+			return _user$project$Key$SpaceBar;
+		default:
+			return _user$project$Key$Unknown;
+	}
+};
