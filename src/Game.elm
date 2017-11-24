@@ -135,7 +135,7 @@ status : Maybe GamePlatform -> Avatar -> Avatar
 status platform avatar =
     { avatar
         | hp = updateHp platform avatar
-        , speedMultiplier = updateSpeed platform avatar
+        , speed = updateSpeed platform avatar
     }
 
 
@@ -156,21 +156,34 @@ updateHp platform avatar =
     else
         avatar.hp
 
-updateSpeed : Maybe GamePlatform -> Avatar -> Float
+updateSpeed : Maybe GamePlatform -> Avatar -> Speed
 updateSpeed platform avatar =
     if isCollidingUnit avatar platform then
         case platform of
           Just platform ->
             case platform.unit of
-              Boost -> min (avatar.speedMultiplier + 0.5) 2.0
-              _ -> avatar.speedMultiplier
+              Boost -> {
+                            multiplier = min (avatar.speed.multiplier + 0.5) 2.0
+                          , timeLimit = 100
+                        }
+              _ -> avatar.speed
           Nothing ->
-            avatar.speedMultiplier
+            avatar.speed
     else if avatar.y < ViewUtil.pit then
-        0
+        avatar.speed
     else
-        avatar.speedMultiplier
+        checkTimeLimit avatar
 
+checkTimeLimit : Avatar -> Speed
+checkTimeLimit avatar =
+  if avatar.speed.timeLimit > 0 then
+    { multiplier = avatar.speed.multiplier
+    , timeLimit = max (avatar.speed.timeLimit - 1) 0
+    }
+  else
+    { multiplier = 1.0
+    , timeLimit = 0
+    }
 
 isCollidingUnit : Avatar -> Maybe GamePlatform -> Bool
 isCollidingUnit avatar platform =

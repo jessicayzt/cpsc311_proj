@@ -141,7 +141,7 @@ avatarElement game =
             else if onPlatform game.avatar game.platforms /= True then
                 "jump"
             else if game.avatar.vx /= 0 then
-                if game.avatar.speedMultiplier >= 1.5 then
+                if game.avatar.speed.multiplier >= 1.5 then
                     "run"
                 else
                     "walk"
@@ -177,7 +177,7 @@ uiContent game =
     "HP : "
         ++ toString game.avatar.hp
         ++ "\nSPEED X "
-        ++ toString game.avatar.speedMultiplier
+        ++ toString game.avatar.speed.multiplier
         ++ "\nSCORE : "
         ++ getScoreString game.score
 

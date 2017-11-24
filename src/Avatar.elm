@@ -13,6 +13,10 @@ defaultSpeed : Float
 defaultSpeed =
     6.0
 
+type alias Speed =
+  { multiplier : Float
+  , timeLimit : Int
+  }
 
 type alias Avatar =
     { x : Float
@@ -21,7 +25,7 @@ type alias Avatar =
     , vy : Float
     , dir : Direction
     , hp : Int
-    , speedMultiplier : Float
+    , speed : Speed
     , invincible : Bool
     }
 
@@ -39,10 +43,9 @@ initialAvatar =
     , vy = 0
     , dir = Right
     , hp = 100
-    , speedMultiplier = 1.0
+    , speed = { multiplier = 1.0 , timeLimit = 0 }
     , invincible = False
     }
-
 
 jump : Avatar -> List GamePlatform -> Avatar
 jump avatar platforms =
@@ -63,7 +66,7 @@ walk newVx avatar =
             else
                 avatar.dir
         , vx =
-            newVx * avatar.speedMultiplier
+            newVx * avatar.speed.multiplier
     }
 
 
