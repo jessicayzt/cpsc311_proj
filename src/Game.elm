@@ -135,6 +135,7 @@ status : Maybe GamePlatform -> Avatar -> Avatar
 status platform avatar =
     { avatar
         | hp = updateHp platform avatar
+        , speedMultiplier = updateSpeed platform avatar
     }
 
 
@@ -154,6 +155,21 @@ updateHp platform avatar =
         0
     else
         avatar.hp
+
+updateSpeed : Maybe GamePlatform -> Avatar -> Float
+updateSpeed platform avatar =
+    if isCollidingUnit avatar platform then
+        case platform of
+          Just platform ->
+            case platform.unit of
+              Boost -> min (avatar.speedMultiplier + 0.5) 2.0
+              _ -> avatar.speedMultiplier
+          Nothing ->
+            avatar.speedMultiplier
+    else if avatar.y < ViewUtil.pit then
+        0
+    else
+        avatar.speedMultiplier
 
 
 isCollidingUnit : Avatar -> Maybe GamePlatform -> Bool

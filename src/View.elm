@@ -110,6 +110,8 @@ platformUnitForm platform =
                 "collectible/health"
             else if platform.unit == TwoBones then
                 "collectible/bones_2"
+            else if platform.unit == Boost then
+                "collectible/boost"
             else
                 "collectible/bones_3"
 

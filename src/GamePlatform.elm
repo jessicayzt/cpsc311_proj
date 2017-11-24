@@ -36,6 +36,7 @@ type Unit
     | Health
     | TwoBones
     | ThreeBones
+    | Boost
     | None
 
 
@@ -67,6 +68,8 @@ assignUnit generated =
       Waste
     else if generated < 11 then
       TwoBones
+    else if generated < 13 then
+      Boost
     else if generated < 14 then
       ThreeBones
     else if generated < 15 then
@@ -107,6 +110,7 @@ hasCollectible platform =
   case platform of
     Just platform ->
       case platform.unit of
+        Boost -> True
         Health -> True
         TwoBones -> True
         ThreeBones -> True
