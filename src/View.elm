@@ -110,6 +110,8 @@ platformUnitForm platform =
                 "collectible/hp"
             else if platform.unit == TwoBones then
                 "collectible/bones_2"
+            else if platform.unit == Boost then
+                "collectible/boost"
             else
                 "collectible/bones_3"
 
@@ -139,7 +141,7 @@ avatarElement game =
             else if onPlatform game.avatar game.platforms /= True then
                 "jump"
             else if game.avatar.vx /= 0 then
-                if game.avatar.speedMultiplier >= 1.5 then
+                if game.avatar.speed.multiplier >= 1.5 then
                     "run"
                 else
                     "walk"
@@ -175,7 +177,7 @@ content game =
     "HP : "
         ++ toString game.avatar.hp
         ++ "\nSPEED X "
-        ++ toString game.avatar.speedMultiplier
+        ++ toString game.avatar.speed.multiplier
         ++ "\nSCORE : "
         ++ scoreString game.score
 
