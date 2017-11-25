@@ -18,6 +18,7 @@ subscriptions game =
         , Keyboard.downs KeyDown
         , Keyboard.ups KeyUp
         , Window.resizes Resize
+        , AnimationFrame.diffs TimeUpdate
         ]
 
 

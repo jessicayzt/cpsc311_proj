@@ -51,8 +51,7 @@ elementGame game =
         overlayForms =
             platformForms game.platforms
                 ++ platformUnitForms game.platforms
-                ++ [ avatarElement game
-                        |> toForm
+                ++ [ avatarForm game
                         |> move ( game.avatar.x, game.avatar.y )
                    , textElement game
                         |> toForm
@@ -126,8 +125,8 @@ platformUnitForm platform =
         |> move ( platform.x, platform.y + 40 )
 
 
-avatarElement : Game -> Element
-avatarElement game =
+avatarForm : Game -> Form
+avatarForm game =
     let
         avatarWidth =
             116
@@ -135,34 +134,156 @@ avatarElement game =
         avatarHeight =
             153
 
-        verb =
-            if game.avatar.hp <= 0 then
-                "die"
-            else if onPlatform game.avatar game.platforms /= True then
-                "jump"
-            else if game.avatar.vx /= 0 then
-                if game.avatar.speed.multiplier >= 1.5 then
-                    "run"
-                else
-                    "walk"
-            else
-                "idle"
+        rightwalk =
+            "../graphic/avatar/walk/right.gif"
 
-        dir =
+        leftwalk =
+            "../graphic/avatar/walk/left.gif"
+
+        rightjump =
+            "../graphic/avatar/jump/right.gif"
+
+        leftjump =
+            "../graphic/avatar/jump/left.gif"
+
+        rightidle =
+            "../graphic/avatar/idle/right.gif"
+
+        leftidle =
+            "../graphic/avatar/idle/left.gif"
+
+        rightdie =
+            "../graphic/avatar/die/right.gif"
+
+        leftdie =
+            "../graphic/avatar/die/left.gif"
+    in
+    if game.avatar.hp <= 0 then
+        case game.avatar.dir of
+            Left ->
+                group
+                    (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                        :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight rightdie)))
+                    )
+
+            Right ->
+                group
+                    (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                        :: alpha 1 (toForm (image avatarHeight avatarHeight rightdie))
+                        :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                    )
+    else if onPlatform game.avatar game.platforms /= True then
+        case game.avatar.dir of
+            Left ->
+                group
+                    (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                        :: alpha 1 (toForm (image avatarWidth avatarHeight leftjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                        :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                        :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                    )
+
+            Right ->
+                group
+                    (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                        :: alpha 1 (toForm (image avatarWidth avatarHeight rightjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                        :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                        :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                    )
+    else if game.avatar.vx /= 0 then
+        if game.avatar.speed.multiplier >= 1.5 then
             case game.avatar.dir of
                 Left ->
-                    "left"
+                    group
+                        (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                            :: alpha 1 (toForm (image avatarWidth avatarHeight leftwalk))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                            :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                            :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                        )
 
                 Right ->
-                    "right"
+                    group
+                        (alpha 1 (toForm (image avatarWidth avatarHeight rightwalk))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                            :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                            :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                        )
+        else
+            case game.avatar.dir of
+                Left ->
+                    group
+                        (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                            :: alpha 1 (toForm (image avatarWidth avatarHeight leftwalk))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                            :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                            :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                        )
 
-        src =
-            "../graphic/avatar/" ++ verb ++ "/" ++ dir ++ ".gif"
-    in
-    if verb == "die" then
-        image avatarHeight avatarHeight src
+                Right ->
+                    group
+                        (alpha 1 (toForm (image avatarWidth avatarHeight rightwalk))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                            :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                            :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                        )
     else
-        image avatarWidth avatarHeight src
+        case game.avatar.dir of
+            Left ->
+                group
+                    (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
+                        :: alpha 1 (toForm (image avatarWidth avatarHeight leftidle))
+                        :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                        :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                    )
+
+            Right ->
+                group
+                    (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight rightjump))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftjump))
+                        :: alpha 1 (toForm (image avatarWidth avatarHeight rightidle))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
+                        :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
+                        :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
+                    )
 
 
 textElement : Game -> Element
