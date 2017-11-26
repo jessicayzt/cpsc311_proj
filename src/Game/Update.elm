@@ -109,7 +109,7 @@ physics avatar standing =
             if standing && avatar.vy <= 0 then
                 0
             else
-                avatar.vy - 1 / 4
+                avatar.vy - 1 / 2
         , score =
             if isSideScrolling avatar && avatar.vx /= 0 then
                 avatar.score + 1
