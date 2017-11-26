@@ -1,14 +1,17 @@
 module View exposing (..)
 
-import Avatar exposing (..)
 import Collage exposing (..)
 import Color exposing (Color)
 import Element exposing (..)
-import Game exposing (..)
-import GamePlatform exposing (..)
+import Game.Avatar.Model as Avatar
+import Game.GamePlatform.Model as GamePlatform
+import Game.Model as Game
+import Game.Update as Game
 import Html exposing (Html)
+import Model exposing (..)
 import String exposing (..)
 import Text exposing (..)
+import Update exposing (..)
 import ViewUtil exposing (..)
 
 
@@ -22,21 +25,21 @@ height =
     truncate ViewUtil.height
 
 
-view : Game -> Html Msg
-view game =
+view : Model -> Html Msg
+view model =
     let
         { width, height } =
-            game.size
+            model.game.size
 
         view =
-            elementGame game
+            elementGame model.game
     in
     view
         |> container width height middle
         |> toHtml
 
 
-elementGame : Game -> Element
+elementGame : Game.Model -> Element
 elementGame game =
     let
         background =
@@ -71,12 +74,12 @@ elementGame game =
             toRender
 
 
-platformForms : List GamePlatform -> List Form
+platformForms : List GamePlatform.Model -> List Form
 platformForms platforms =
     List.map platformForm platforms
 
 
-platformForm : GamePlatform -> Form
+platformForm : GamePlatform.Model -> Form
 platformForm platform =
     let
         platRect =
@@ -86,12 +89,12 @@ platformForm platform =
     platRect |> move ( platform.x, platform.y )
 
 
-platformUnitForms : List GamePlatform -> List Form
+platformUnitForms : List GamePlatform.Model -> List Form
 platformUnitForms platforms =
-    List.map platformUnitForm (List.filter (\platform -> platform.unit /= None) platforms)
+    List.map platformUnitForm (List.filter (\platform -> platform.unit /= GamePlatform.None) platforms)
 
 
-platformUnitForm : GamePlatform -> Form
+platformUnitForm : GamePlatform.Model -> Form
 platformUnitForm platform =
     let
         unitWidth =
@@ -101,15 +104,15 @@ platformUnitForm platform =
             50
 
         unit =
-            if platform.unit == Spikes then
+            if platform.unit == GamePlatform.Spikes then
                 "hazard/spikes"
-            else if platform.unit == Waste then
+            else if platform.unit == GamePlatform.Waste then
                 "hazard/nuclear_waste"
-            else if platform.unit == HP then
+            else if platform.unit == GamePlatform.HP then
                 "collectible/hp"
-            else if platform.unit == TwoBones then
+            else if platform.unit == GamePlatform.TwoBones then
                 "collectible/bones_2"
-            else if platform.unit == Boost then
+            else if platform.unit == GamePlatform.Boost then
                 "collectible/boost"
             else
                 "collectible/bones_3"
@@ -125,7 +128,7 @@ platformUnitForm platform =
         |> move ( platform.x, platform.y + 40 )
 
 
-avatarForm : Game -> Form
+avatarForm : Game.Model -> Form
 avatarForm game =
     let
         avatarWidth =
@@ -160,7 +163,7 @@ avatarForm game =
     in
     if game.avatar.hp <= 0 then
         case game.avatar.dir of
-            Left ->
+            Avatar.Left ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -172,7 +175,7 @@ avatarForm game =
                         :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight rightdie)))
                     )
 
-            Right ->
+            Avatar.Right ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -183,9 +186,9 @@ avatarForm game =
                         :: alpha 1 (toForm (image avatarHeight avatarHeight rightdie))
                         :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
                     )
-    else if onPlatform game.avatar game.platforms /= True then
+    else if game.avatar.vy /= 0 then
         case game.avatar.dir of
-            Left ->
+            Avatar.Left ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -197,7 +200,7 @@ avatarForm game =
                         :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
                     )
 
-            Right ->
+            Avatar.Right ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -211,7 +214,7 @@ avatarForm game =
     else if game.avatar.vx /= 0 then
         if game.avatar.speed.multiplier >= 1.5 then
             case game.avatar.dir of
-                Left ->
+                Avatar.Left ->
                     group
                         (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                             :: alpha 1 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -223,7 +226,7 @@ avatarForm game =
                             :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
                         )
 
-                Right ->
+                Avatar.Right ->
                     group
                         (alpha 1 (toForm (image avatarWidth avatarHeight rightwalk))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -236,7 +239,7 @@ avatarForm game =
                         )
         else
             case game.avatar.dir of
-                Left ->
+                Avatar.Left ->
                     group
                         (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                             :: alpha 1 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -248,7 +251,7 @@ avatarForm game =
                             :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
                         )
 
-                Right ->
+                Avatar.Right ->
                     group
                         (alpha 1 (toForm (image avatarWidth avatarHeight rightwalk))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -261,7 +264,7 @@ avatarForm game =
                         )
     else
         case game.avatar.dir of
-            Left ->
+            Avatar.Left ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -273,7 +276,7 @@ avatarForm game =
                         :: List.singleton (alpha 0 (toForm (image avatarHeight avatarHeight rightdie)))
                     )
 
-            Right ->
+            Avatar.Right ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight rightwalk))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftwalk))
@@ -286,21 +289,21 @@ avatarForm game =
                     )
 
 
-textElement : Game -> Element
+textElement : Game.Model -> Element
 textElement game =
     Text.fromString (content game)
         |> Text.color Color.white
         |> formatText
 
 
-content : Game -> String
+content : Game.Model -> String
 content game =
     "HP : "
         ++ toString game.avatar.hp
         ++ "\nSPEED X "
         ++ toString game.avatar.speed.multiplier
         ++ "\nSCORE : "
-        ++ scoreString game.score
+        ++ scoreString game.avatar.score
 
 
 scoreString : Int -> String

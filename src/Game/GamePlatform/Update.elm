@@ -1,43 +1,9 @@
-module GamePlatform exposing (..)
+module Game.GamePlatform.Update exposing (..)
 
+import Game.GamePlatform.Model exposing (..)
 import Random exposing (Generator)
 import Time exposing (Time, second)
 import ViewUtil exposing (..)
-
-
-ground : GamePlatform
-ground =
-    GamePlatform (width / 2) -ViewUtil.halfWidth (-ViewUtil.halfHeight + (ViewUtil.platformHeight / 2)) Spikes
-
-
-init : GamePlatform
-init =
-    GamePlatform 200 (-ViewUtil.halfWidth / 2) (-ViewUtil.halfHeight / 2) Spikes
-
-
-type alias GamePlatform =
-    { w : Float
-    , x : Float
-    , y : Float
-    , unit : Unit
-    }
-
-
-type alias PlatformToGenerate =
-    { w : Float
-    , heightDiff : Float
-    , unit : Unit
-    }
-
-
-type Unit
-    = Spikes
-    | Waste
-    | HP
-    | TwoBones
-    | ThreeBones
-    | Boost
-    | None
 
 
 platformGenerator : Generator PlatformToGenerate
@@ -78,7 +44,7 @@ assignUnit generated =
         None
 
 
-extendPlatforms : PlatformToGenerate -> List GamePlatform -> List GamePlatform
+extendPlatforms : PlatformToGenerate -> List Model -> List Model
 extendPlatforms newPlatform platforms =
     case List.head platforms of
         Just previousPlatform ->
@@ -88,27 +54,22 @@ extendPlatforms newPlatform platforms =
             platforms
 
 
-generatePlatform : PlatformToGenerate -> GamePlatform -> GamePlatform
+generatePlatform : PlatformToGenerate -> Model -> Model
 generatePlatform newPlatform previousPlatform =
     let
         newPlatformY =
             previousPlatform.y + newPlatform.heightDiff
 
         groundExtension =
-            GamePlatform (width / 2) (previousPlatform.x + ViewUtil.platformGap) (-ViewUtil.halfHeight + (ViewUtil.platformHeight / 2)) newPlatform.unit
+            Model (width / 2) (previousPlatform.x + ViewUtil.platformGap) (-ViewUtil.halfHeight + (ViewUtil.platformHeight / 2)) newPlatform.unit
     in
     if newPlatformY < (ViewUtil.halfHeight / 2) then
-        GamePlatform newPlatform.w (previousPlatform.x + ViewUtil.platformGap) newPlatformY newPlatform.unit
+        Model newPlatform.w (previousPlatform.x + ViewUtil.platformGap) newPlatformY newPlatform.unit
     else
         groundExtension
 
 
-removeCollectible : GamePlatform -> GamePlatform
-removeCollectible prevPlatform =
-    GamePlatform prevPlatform.w prevPlatform.x prevPlatform.y None
-
-
-hasCollectible : Maybe GamePlatform -> Bool
+hasCollectible : Maybe Model -> Bool
 hasCollectible platform =
     case platform of
         Just platform ->
@@ -130,3 +91,8 @@ hasCollectible platform =
 
         Nothing ->
             False
+
+
+removeCollectible : Model -> Model
+removeCollectible prevPlatform =
+    Model prevPlatform.w prevPlatform.x prevPlatform.y None

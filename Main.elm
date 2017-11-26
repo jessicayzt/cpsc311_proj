@@ -1,9 +1,11 @@
 module Main exposing (..)
 
 import AnimationFrame exposing (..)
-import Game exposing (..)
 import Html exposing (..)
 import Keyboard exposing (KeyCode)
+import Model exposing (..)
+import Task exposing (..)
+import Update exposing (..)
 import View exposing (..)
 import Window exposing (Size)
 
@@ -11,14 +13,13 @@ import Window exposing (Size)
 -- SUBSCRIPTIONS
 
 
-subscriptions : Game -> Sub Msg
-subscriptions game =
+subscriptions : Model -> Sub Msg
+subscriptions subscriptions =
     Sub.batch
         [ AnimationFrame.diffs TimeUpdate
         , Keyboard.downs KeyDown
         , Keyboard.ups KeyUp
         , Window.resizes Resize
-        , AnimationFrame.diffs TimeUpdate
         ]
 
 
@@ -26,10 +27,10 @@ subscriptions game =
 -- MAIN
 
 
-main : Program Never Game Msg
+main : Program Never Model Msg
 main =
     Html.program
-        { init = initGame
+        { init = ( initialModel, Task.perform Resize Window.size )
         , view = view
         , update = update
         , subscriptions = subscriptions
