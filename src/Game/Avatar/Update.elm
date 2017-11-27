@@ -10,11 +10,11 @@ type Msg
     | KeyUp Key
 
 
-update : Msg -> Model -> Model
-update msg avatar =
+update : Msg -> Model -> Bool -> Model
+update msg avatar isStanding =
     case msg of
         KeyDown key ->
-            keyDown key avatar
+            keyDown key avatar isStanding
 
         KeyUp key ->
             { avatar
@@ -26,8 +26,8 @@ update msg avatar =
             }
 
 
-keyDown : Key -> Model -> Model
-keyDown key avatar =
+keyDown : Key -> Model -> Bool -> Model
+keyDown key avatar isStanding =
     case key of
         LeftArrowKey ->
             walk -defaultSpeed avatar
@@ -36,15 +36,15 @@ keyDown key avatar =
             walk defaultSpeed avatar
 
         SpaceBar ->
-            jump avatar
+            jump avatar isStanding
 
         _ ->
             avatar
 
 
-jump : Model -> Model
-jump avatar =
-    if avatar.vy == 0 then
+jump : Model -> Bool -> Model
+jump avatar isStanding =
+    if isStanding then
         { avatar | vy = jumpVelocity }
     else
         avatar

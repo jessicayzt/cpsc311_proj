@@ -26,17 +26,26 @@ type OutMsg
 
 update : Msg -> Model -> Model
 update msg game =
+    let
+        currentPlatform =
+            List.head (List.filter ((\platform -> platform game.avatar) onGivenPlatform) game.platforms)
+    in
     case msg of
         TimeUpdate msg_ ->
             if game.avatar.hp <= 0 || game.avatar.y < ViewUtil.pit then
                 { game | state = Over }
             else if game.state == Playing then
-                updateGame game
+                updateGame game currentPlatform
             else
                 game
 
         MsgForAvatar msg_ ->
-            { game | avatar = Avatar.update msg_ game.avatar }
+            case currentPlatform of
+                Just platform ->
+                    { game | avatar = Avatar.update msg_ game.avatar True }
+
+                Nothing ->
+                    { game | avatar = Avatar.update msg_ game.avatar False }
 
         NewPlatform platformToGenerate ->
             { game | platforms = extendPlatforms platformToGenerate game.platforms }
@@ -48,12 +57,9 @@ update msg game =
             game
 
 
-updateGame : Model -> Model
-updateGame game =
+updateGame : Model -> Maybe GamePlatform.Model -> Model
+updateGame game currentPlatform =
     let
-        currentPlatform =
-            List.head (List.filter ((\platform -> platform game.avatar) onGivenPlatform) game.platforms)
-
         avatarColliding =
             isCollidingUnit game.avatar currentPlatform
 
