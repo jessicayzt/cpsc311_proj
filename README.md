@@ -16,14 +16,20 @@ Spacebar - Jump
 
 ### Hazards
 
-<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/spikes.png" width="50" height="50" /> -1 HP per tick
+<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/spikes.png" width="50" height="50" /> -1 HP
 
 
-<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/nuclear_waste.png" width="50" height="50" /> -10 HP per tick
+<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/nuclear_waste.png" width="50" height="50" /> -10 HP
 
 ### Collectibles
 
 <img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/collectible/hp.png" width="50" height="50" /> +10 HP
+
+
+<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/collectible/boost.png" width="50" height="50" /> +0.5 speed multiplier
+
+
+<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/collectible/shield.png" width="50" height="50" /> Full invincibility
 
 
 <img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/collectible/bones_2.png" width="50" height="50" /> +50 score
