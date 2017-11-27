@@ -12,8 +12,7 @@ type State
 
 
 type alias Model =
-    { size : Size
-    , state : State
+    { state : State
     , platforms : List GamePlatform.Model
     , avatar : Avatar.Model
     }
@@ -21,8 +20,7 @@ type alias Model =
 
 model : Model
 model =
-    { size = Size 0 0
-    , state = Playing
+    { state = Playing
     , platforms = [ GamePlatform.model, GamePlatform.ground ]
     , avatar = Avatar.model
     }

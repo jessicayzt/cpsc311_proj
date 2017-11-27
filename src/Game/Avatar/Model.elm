@@ -17,6 +17,8 @@ type Key
     = LeftArrowKey
     | RightArrowKey
     | SpaceBar
+    | Escape
+    | Enter
     | Unknown
 
 

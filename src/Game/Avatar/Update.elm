@@ -17,13 +17,10 @@ update msg avatar isStanding =
             keyDown key avatar isStanding
 
         KeyUp key ->
-            { avatar
-                | vx =
-                    if key == SpaceBar then
-                        avatar.vx
-                    else
-                        0
-            }
+            if key == SpaceBar then
+                avatar
+            else
+                { avatar | vx = 0 }
 
 
 keyDown : Key -> Model -> Bool -> Model

@@ -86,7 +86,7 @@ elementGame game =
 gameOverForm : Form
 gameOverForm =
     Text.fromString
-        "Game Over!\nPress F5 to play again."
+        "Game Over!\nPress ENTER to play again."
         |> Text.color Color.orange
         |> formatText
         |> toForm

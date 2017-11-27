@@ -8,20 +8,18 @@ import Game.Model exposing (..)
 import List.Extra exposing (replaceIf)
 import Time exposing (Time)
 import ViewUtil exposing (..)
-import Window exposing (Size)
 
 
 type Msg
     = TimeUpdate Time
     | MsgForAvatar Avatar.Msg
-    | Resize Size
     | NewPlatform GamePlatform.PlatformToGenerate
-    | NoOp
 
 
 type OutMsg
     = OutNoOp
     | GeneratePlatform
+    | NewScore Int
 
 
 update : Msg -> Model -> Model
@@ -49,12 +47,6 @@ update msg game =
 
         NewPlatform platformToGenerate ->
             { game | platforms = extendPlatforms platformToGenerate game.platforms }
-
-        Resize size ->
-            { game | size = size }
-
-        _ ->
-            game
 
 
 updateGame : Model -> Maybe GamePlatform.Model -> Model
@@ -191,7 +183,9 @@ isCollidingUnit avatar platform =
 
 updateOutMsg : Model -> OutMsg
 updateOutMsg game =
-    if List.length game.platforms <= 15 then
+    if game.state == Over then
+        NewScore game.avatar.score
+    else if List.length game.platforms <= 15 then
         GeneratePlatform
     else
         OutNoOp
