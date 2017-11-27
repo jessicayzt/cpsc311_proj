@@ -5,12 +5,12 @@ import ViewUtil exposing (..)
 
 jumpVelocity : Float
 jumpVelocity =
-    11.0
+    10.0
 
 
 defaultSpeed : Float
 defaultSpeed =
-    8.0
+    7.0
 
 
 type Key

@@ -115,7 +115,7 @@ physics avatar standing =
             if standing && avatar.vy <= 0 then
                 0
             else
-                avatar.vy - 1 / 2
+                avatar.vy - 1 / 3
         , score =
             if isSideScrolling avatar && avatar.vx /= 0 then
                 avatar.score + 1
@@ -161,7 +161,7 @@ standingOn avatar platform =
         platformStandingLevel =
             platform.y + platformBuffer
     in
-    Basics.abs (platformStandingLevel - avatar.y) <= 15
+    Basics.abs (platformStandingLevel - avatar.y) <= 20
 
 
 withinEdges : Avatar.Model -> GamePlatform.Model -> Bool
