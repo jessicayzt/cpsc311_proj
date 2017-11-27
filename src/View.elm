@@ -24,7 +24,13 @@ view model =
                 [ div [ divStyle ]
                     [ h3 [] [ Html.text "[ Press ENTER to begin ]" ]
                     , Html.text "You are playing as: "
-                    , Html.input [ placeholder "Enter your name", value model.playerName, onInput InputName, inputStyle ] []
+                    , Html.input
+                        [ placeholder "Enter your name"
+                        , value model.playerName
+                        , onInput InputName
+                        , inputStyle
+                        ]
+                        []
                     , Html.text "High Scores"
                     , highScoreTable model.highScores
                     ]
@@ -79,8 +85,7 @@ inputStyle : Attribute msg
 inputStyle =
     Html.Attributes.style
         [ ( "width", "100%" )
-        , ( "height", "20px" )
-        , ( "padding", "10px 0" )
+        , ( "padding", "10px 15px" )
         , ( "font-size", "1.5em" )
         , ( "text-align", "center" )
         , ( "border", "none" )
