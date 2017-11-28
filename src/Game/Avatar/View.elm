@@ -50,7 +50,7 @@ avatarForm avatar =
                         :: alpha 0 (toForm (image avatarWidth avatarHeight rightidle))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight leftidle))
                         :: alpha 0 (toForm (image avatarHeight avatarHeight rightdie))
-                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight rightdie)))
+                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight leftdie)))
                     )
 
             Right ->
