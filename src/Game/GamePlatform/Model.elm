@@ -28,6 +28,7 @@ type Unit
     | TwoBones
     | ThreeBones
     | Boost
+    | Shield
     | None
 
 

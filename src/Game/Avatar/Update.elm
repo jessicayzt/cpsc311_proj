@@ -71,11 +71,13 @@ updateStatus platform avatar =
         | hp = updateHp platform avatar
         , speed = updateSpeed platform avatar
         , score = updateScore platform avatar
+        , invincible = updateShield platform avatar
     }
 
 
 updateHp : GamePlatform.Model -> Model -> Int
 updateHp platform avatar =
+  if avatar.invincible.isInvincible == False then
     case platform.unit of
         GamePlatform.Spikes ->
             max (avatar.hp - 1) 0
@@ -91,6 +93,8 @@ updateHp platform avatar =
 
         _ ->
             avatar.hp
+  else
+      avatar.hp
 
 
 updateSpeed : GamePlatform.Model -> Model -> Speed
@@ -98,7 +102,7 @@ updateSpeed platform avatar =
     case platform.unit of
         GamePlatform.Boost ->
             { multiplier = min (avatar.speed.multiplier + 0.5) 2.0
-            , timeLimit = 100
+            , timeLimit = 300
             }
 
         _ ->
@@ -115,6 +119,28 @@ checkTimeLimit avatar =
         { multiplier = 1.0
         , timeLimit = 0
         }
+
+updateShield : GamePlatform.Model -> Model -> Invincible
+updateShield platform avatar =
+    case platform.unit of
+      GamePlatform.Shield ->
+          { isInvincible = True
+          , timeLimit = 300
+          }
+
+      _ ->
+          checkShieldTime avatar
+
+checkShieldTime : Model -> Invincible
+checkShieldTime avatar =
+      if avatar.invincible.timeLimit > 0 then
+          { isInvincible = True
+          , timeLimit = max (avatar.invincible.timeLimit - 1) 0
+          }
+      else
+          { isInvincible = False
+          , timeLimit = 0
+          }
 
 
 updateScore : GamePlatform.Model -> Model -> Int

@@ -30,6 +30,8 @@ content game =
         ++ toString game.avatar.speed.multiplier
         ++ "\nSCORE : "
         ++ scoreString game.avatar.score
+        ++ "\nSHIELD : "
+        ++ toString game.avatar.invincible
 
 
 textElement : Model -> Element

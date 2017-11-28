@@ -42,6 +42,8 @@ assignUnit generated =
         ThreeBones
     else if generated <= 15 then
         HP
+    else if generated <= 16 then
+        Shield
     else
         None
 
@@ -86,6 +88,9 @@ hasCollectible platform =
                     True
 
                 ThreeBones ->
+                    True
+
+                Shield ->
                     True
 
                 _ ->

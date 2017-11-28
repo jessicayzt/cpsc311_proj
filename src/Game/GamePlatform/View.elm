@@ -54,6 +54,9 @@ platformUnitForm platform =
                 Boost ->
                     "collectible/boost"
 
+                Shield ->
+                    "collectible/shield"
+
                 _ ->
                     "collectible/bones_3"
 

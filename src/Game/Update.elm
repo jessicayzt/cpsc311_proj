@@ -194,6 +194,8 @@ physics avatar multiplier standing =
                 avatar.score
         , speed =
             Avatar.checkTimeLimit avatar
+        , invincible =
+            Avatar.checkShieldTime avatar
     }
 
 

@@ -32,6 +32,11 @@ type alias Speed =
     , timeLimit : Int
     }
 
+type alias Invincible =
+    { isInvincible : Bool
+    , timeLimit : Int
+    }
+
 
 type alias Model =
     { x : Float
@@ -41,7 +46,7 @@ type alias Model =
     , dir : Direction
     , hp : Int
     , speed : Speed
-    , invincible : Bool
+    , invincible : Invincible
     , score : Int
     }
 
@@ -55,6 +60,6 @@ model =
     , dir = Right
     , hp = 100
     , speed = { multiplier = 1.0, timeLimit = 0 }
-    , invincible = False
+    , invincible = { isInvincible = False, timeLimit = 0 }
     , score = 0
     }
