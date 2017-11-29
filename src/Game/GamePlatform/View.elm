@@ -45,12 +45,6 @@ platformUnitForm platform =
                 Waste ->
                     "hazard/nuclear_waste"
 
-                Zombie status ->
-                    if Tuple.second status == Left then
-                        "hazard/zombie/left"
-                    else
-                        "hazard/zombie/right"
-
                 HP ->
                     "collectible/hp"
 
@@ -65,31 +59,36 @@ platformUnitForm platform =
 
         src =
             "../graphic/env/" ++ unit
-
-        element =
-            case platform.unit of
-                Zombie status ->
-                    image 108 130 (src ++ ".gif")
-
-                _ ->
-                    image unitWidth unitHeight (src ++ ".png")
-
-        elementX =
-            case platform.unit of
-                Zombie status ->
+    in
+    case platform.unit of
+        Zombie status ->
+            let
+                zombieX =
                     platform.x + Tuple.first status
 
-                _ ->
-                    platform.x
-
-        elementY =
-            case platform.unit of
-                Zombie status ->
+                zombieY =
                     platform.y + 70
 
-                _ ->
-                    platform.y + 40
-    in
-    element
-        |> toForm
-        |> move ( elementX, elementY )
+                zombieLeftForm =
+                    toForm (image 108 130 "../graphic/env/hazard/zombie/left.gif")
+
+                zombieRightForm =
+                    toForm (image 108 130 "../graphic/env/hazard/zombie/right.gif")
+            in
+            if Tuple.second status == Left then
+                group
+                    (alpha 1 zombieLeftForm
+                        :: List.singleton (alpha 0 zombieRightForm)
+                    )
+                    |> move ( zombieX, zombieY )
+            else
+                group
+                    (alpha 0 zombieLeftForm
+                        :: List.singleton (alpha 1 zombieRightForm)
+                    )
+                    |> move ( zombieX, zombieY )
+
+        _ ->
+            image unitWidth unitHeight (src ++ ".png")
+                |> toForm
+                |> move ( platform.x, platform.y + 40 )

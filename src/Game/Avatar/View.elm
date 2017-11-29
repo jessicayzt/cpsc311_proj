@@ -33,45 +33,38 @@ avatarForm avatar =
         jump_right =
             "../graphic/avatar/jump/right.gif"
 
-        idle_left =
-            "../graphic/avatar/idle/left.gif"
-
-        idle_right =
-            "../graphic/avatar/idle/right.gif"
-
         die_left =
             "../graphic/avatar/die/left.gif"
 
         die_right =
             "../graphic/avatar/die/right.gif"
+
+        idle_left =
+            "../graphic/avatar/idle/left.gif"
+
+        idle_right =
+            "../graphic/avatar/idle/right.gif"
     in
     if avatar.hp <= 0 then
         case avatar.dir of
             Left ->
-                group
-                    (alpha 0 (toForm (image avatarWidth avatarHeight walk_left))
-                        :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
-                        :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
-                        :: alpha 0 (toForm (image avatarWidth avatarHeight idle_right))
-                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight die_left)))
-                    )
+                toForm (image avatarHeight avatarHeight die_left)
 
             Right ->
-                group
-                    (alpha 0 (toForm (image avatarWidth avatarHeight walk_left))
-                        :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
-                        :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
-                        :: alpha 0 (toForm (image avatarWidth avatarHeight idle_right))
-                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight die_right)))
-                    )
+                toForm (image avatarHeight avatarHeight die_right)
     else if avatar.vy /= 0 then
         case avatar.dir of
             Left ->
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight walk_left))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight idle_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
                         :: List.singleton (alpha 1 (toForm (image avatarWidth avatarHeight jump_left)))
                     )
 
@@ -79,8 +72,13 @@ avatarForm avatar =
                 group
                     (alpha 0 (toForm (image avatarWidth avatarHeight walk_left))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight idle_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
                         :: List.singleton (alpha 1 (toForm (image avatarWidth avatarHeight jump_right)))
                     )
     else if avatar.vx /= 0 then
@@ -92,6 +90,10 @@ avatarForm avatar =
                             :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
                             :: alpha 1 (toForm (image avatarWidth avatarHeight run_left))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                             :: List.singleton (alpha 0 (toForm (image avatarWidth avatarHeight idle_right)))
                         )
@@ -102,6 +104,10 @@ avatarForm avatar =
                             :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
                             :: alpha 1 (toForm (image avatarWidth avatarHeight run_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                             :: List.singleton (alpha 0 (toForm (image avatarWidth avatarHeight idle_right)))
                         )
@@ -113,6 +119,10 @@ avatarForm avatar =
                             :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                             :: List.singleton (alpha 0 (toForm (image avatarWidth avatarHeight idle_right)))
                         )
@@ -123,6 +133,10 @@ avatarForm avatar =
                             :: alpha 1 (toForm (image avatarWidth avatarHeight walk_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                            :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                             :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                             :: List.singleton (alpha 0 (toForm (image avatarWidth avatarHeight idle_right)))
                         )
@@ -134,6 +148,10 @@ avatarForm avatar =
                         :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                         :: alpha 1 (toForm (image avatarWidth avatarHeight idle_left))
                         :: List.singleton (alpha 0 (toForm (image avatarWidth avatarHeight idle_right)))
                     )
@@ -144,6 +162,10 @@ avatarForm avatar =
                         :: alpha 0 (toForm (image avatarWidth avatarHeight walk_right))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight run_left))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight run_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight jump_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight jump_right))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_left))
+                        :: alpha 0 (toForm (image avatarWidth avatarHeight die_right))
                         :: alpha 0 (toForm (image avatarWidth avatarHeight idle_left))
                         :: List.singleton (alpha 1 (toForm (image avatarWidth avatarHeight idle_right)))
                     )
