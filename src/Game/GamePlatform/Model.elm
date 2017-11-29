@@ -23,11 +23,17 @@ type alias PlatformToGenerate =
 type Unit
     = Spikes
     | Waste
+    | Zombie ( Float, Direction )
     | HP
     | TwoBones
     | ThreeBones
     | Boost
     | None
+
+
+type Direction
+    = Left
+    | Right
 
 
 model : Model

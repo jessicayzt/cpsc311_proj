@@ -83,6 +83,9 @@ updateHp platform avatar =
         GamePlatform.Waste ->
             max (avatar.hp - 10) 0
 
+        GamePlatform.Zombie status ->
+            max (avatar.hp - 5) 0
+
         GamePlatform.HP ->
             min (avatar.hp + 10) 100
 

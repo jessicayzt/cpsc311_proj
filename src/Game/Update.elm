@@ -59,12 +59,12 @@ updateGame game currentPlatform =
             if avatarColliding && hasCollectible currentPlatform then
                 case currentPlatform of
                     Just currentPlatform ->
-                        replaceIf (\platform -> platform == currentPlatform) (removeCollectible currentPlatform) game.platforms
+                        replaceIf (\platform -> platform == currentPlatform) (removeCollectible currentPlatform) (updatePlatformUnits game.platforms)
 
                     Nothing ->
-                        game.platforms
+                        updatePlatformUnits game.platforms
             else
-                game.platforms
+                updatePlatformUnits game.platforms
     in
     { game
         | platforms =
@@ -74,6 +74,75 @@ updateGame game currentPlatform =
                 updatedPlatforms
         , avatar = updatePhysics game.avatar avatarColliding currentPlatform
     }
+
+
+updatePlatformUnits : List GamePlatform.Model -> List GamePlatform.Model
+updatePlatformUnits platforms =
+    List.map movePlatformUnit platforms
+
+
+movePlatformUnit : GamePlatform.Model -> GamePlatform.Model
+movePlatformUnit platform =
+    case platform.unit of
+        GamePlatform.Zombie status ->
+            let
+                currentDir =
+                    Tuple.second status
+            in
+            { platform
+                | unit =
+                    case currentDir of
+                        GamePlatform.Left ->
+                            let
+                                newOffset =
+                                    Tuple.first status - 1
+
+                                newDir =
+                                    if unitAtLeftEdge platform newOffset then
+                                        GamePlatform.Right
+                                    else
+                                        GamePlatform.Left
+                            in
+                            GamePlatform.Zombie ( newOffset, newDir )
+
+                        _ ->
+                            let
+                                newOffset =
+                                    Tuple.first status + 1
+
+                                newDir =
+                                    if unitAtRightEdge platform newOffset then
+                                        GamePlatform.Left
+                                    else
+                                        GamePlatform.Right
+                            in
+                            GamePlatform.Zombie ( newOffset, newDir )
+            }
+
+        _ ->
+            platform
+
+
+unitAtLeftEdge : GamePlatform.Model -> Float -> Bool
+unitAtLeftEdge platform offset =
+    let
+        leftEdge =
+            platform.x - (platform.w / 2) + 15
+    in
+    platform.x
+        + offset
+        <= leftEdge
+
+
+unitAtRightEdge : GamePlatform.Model -> Float -> Bool
+unitAtRightEdge platform offset =
+    let
+        rightEdge =
+            platform.x + (platform.w / 2) - 15
+    in
+    platform.x
+        + offset
+        >= rightEdge
 
 
 updatePhysics : Avatar.Model -> Bool -> Maybe GamePlatform.Model -> Avatar.Model
@@ -175,7 +244,12 @@ isCollidingUnit : Avatar.Model -> Maybe GamePlatform.Model -> Bool
 isCollidingUnit avatar platform =
     case platform of
         Just platform ->
-            Basics.abs (platform.x - avatar.x) <= 20
+            case platform.unit of
+                GamePlatform.Zombie status ->
+                    Basics.abs ((platform.x + Tuple.first status) - avatar.x) <= 20
+
+                _ ->
+                    Basics.abs (platform.x - avatar.x) <= 20
 
         Nothing ->
             False

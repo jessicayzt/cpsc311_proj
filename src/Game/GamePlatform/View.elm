@@ -38,25 +38,58 @@ platformUnitForm platform =
             50
 
         unit =
-            if platform.unit == Spikes then
-                "hazard/spikes"
-            else if platform.unit == Waste then
-                "hazard/nuclear_waste"
-            else if platform.unit == HP then
-                "collectible/hp"
-            else if platform.unit == TwoBones then
-                "collectible/bones_2"
-            else if platform.unit == Boost then
-                "collectible/boost"
-            else
-                "collectible/bones_3"
+            case platform.unit of
+                Spikes ->
+                    "hazard/spikes"
+
+                Waste ->
+                    "hazard/nuclear_waste"
+
+                Zombie status ->
+                    if Tuple.second status == Left then
+                        "hazard/zombie/left"
+                    else
+                        "hazard/zombie/right"
+
+                HP ->
+                    "collectible/hp"
+
+                TwoBones ->
+                    "collectible/bones_2"
+
+                Boost ->
+                    "collectible/boost"
+
+                _ ->
+                    "collectible/bones_3"
 
         src =
-            "../graphic/env/" ++ unit ++ ".png"
+            "../graphic/env/" ++ unit
 
         element =
-            image unitWidth unitHeight src
+            case platform.unit of
+                Zombie status ->
+                    image 108 130 (src ++ ".gif")
+
+                _ ->
+                    image unitWidth unitHeight (src ++ ".png")
+
+        elementX =
+            case platform.unit of
+                Zombie status ->
+                    platform.x + Tuple.first status
+
+                _ ->
+                    platform.x
+
+        elementY =
+            case platform.unit of
+                Zombie status ->
+                    platform.y + 70
+
+                _ ->
+                    platform.y + 40
     in
     element
         |> toForm
-        |> move ( platform.x, platform.y + 40 )
+        |> move ( elementX, elementY )

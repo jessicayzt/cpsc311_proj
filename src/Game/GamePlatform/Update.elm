@@ -23,12 +23,14 @@ platformHeightDiffGenerator =
 
 unitGenerator : Generator Unit
 unitGenerator =
-    Random.map assignUnit (Random.int 1 20)
+    Random.map assignUnit (Random.int 1 25)
 
 
 assignUnit : Int -> Unit
 assignUnit generated =
-    if generated <= 4 then
+    if generated == 1 then
+        Zombie ( 0.0, Right )
+    else if generated <= 4 then
         Spikes
     else if generated <= 7 then
         Waste
