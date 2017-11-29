@@ -19,6 +19,9 @@ Spacebar - Jump
 <img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/spikes.png" width="50" height="50" /> -1 HP
 
 
+<img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/zombie/left.gif" width="54" height="65" /> -5 HP
+
+
 <img src="https://github.com/jessicayzt/cpsc311_proj/blob/master/graphic/env/hazard/nuclear_waste.png" width="50" height="50" /> -10 HP
 
 ### Collectibles
