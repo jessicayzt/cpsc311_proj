@@ -6,6 +6,11 @@ import Task exposing (..)
 import Window exposing (Size)
 
 
+msPerUpdate : Float
+msPerUpdate =
+    15.0
+
+
 type State
     = Playing
     | Over

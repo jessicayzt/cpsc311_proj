@@ -24,34 +24,46 @@ type OutMsg
 
 update : Msg -> Model -> Model
 update msg game =
-    let
-        currentPlatform =
-            List.head (List.filter ((\platform -> platform game.avatar) onGivenPlatform) game.platforms)
-    in
     case msg of
-        TimeUpdate msg_ ->
+        TimeUpdate elapsed ->
             if game.avatar.hp <= 0 || game.avatar.y < ViewUtil.pit then
                 { game | state = Over }
             else if game.state == Playing then
-                updateGame game currentPlatform
+                updateGame game elapsed
             else
                 game
 
         MsgForAvatar msg_ ->
-            case currentPlatform of
-                Just platform ->
-                    { game | avatar = Avatar.update msg_ game.avatar True }
-
-                Nothing ->
-                    { game | avatar = Avatar.update msg_ game.avatar False }
+            { game | avatar = Avatar.update msg_ game.avatar (List.any ((\platform -> platform game.avatar) onGivenPlatform) game.platforms) }
 
         NewPlatform platformToGenerate ->
             { game | platforms = extendPlatforms platformToGenerate game.platforms }
 
 
-updateGame : Model -> Maybe GamePlatform.Model -> Model
-updateGame game currentPlatform =
+updateGame : Model -> Time -> Model
+updateGame game lag =
     let
+        motionMultipler =
+            if lag >= msPerUpdate then
+                1
+            else
+                lag / msPerUpdate
+
+        newGame =
+            updateMotion game motionMultipler
+    in
+    if lag >= msPerUpdate then
+        updateGame newGame (lag - msPerUpdate)
+    else
+        newGame
+
+
+updateMotion : Model -> Float -> Model
+updateMotion game motionMultiplier =
+    let
+        currentPlatform =
+            List.head (List.filter ((\platform -> platform game.avatar) onGivenPlatform) game.platforms)
+
         avatarColliding =
             isCollidingUnit game.avatar currentPlatform
 
@@ -65,14 +77,25 @@ updateGame game currentPlatform =
                         updatePlatformUnits game.platforms
             else
                 updatePlatformUnits game.platforms
+
+        movedAvatar =
+            case currentPlatform of
+                Just currentPlatform ->
+                    if avatarColliding then
+                        physics (Avatar.updateStatus currentPlatform game.avatar) motionMultiplier True
+                    else
+                        physics game.avatar motionMultiplier True
+
+                Nothing ->
+                    physics game.avatar motionMultiplier False
     in
     { game
         | platforms =
             if isSideScrolling game.avatar && game.avatar.vx /= 0 then
-                List.map ((\platform -> platform game.avatar) scrollPlatform) (List.filter (\platform -> platform.x > -ViewUtil.width) updatedPlatforms)
+                List.map ((\platform -> platform game.avatar motionMultiplier) scrollPlatform) (List.filter (\platform -> platform.x > -ViewUtil.width) updatedPlatforms)
             else
                 updatedPlatforms
-        , avatar = updatePhysics game.avatar avatarColliding currentPlatform
+        , avatar = movedAvatar
     }
 
 
@@ -158,25 +181,25 @@ updatePhysics avatar isColliding platform =
             physics avatar False
 
 
-physics : Avatar.Model -> Bool -> Avatar.Model
-physics avatar standing =
+physics : Avatar.Model -> Float -> Bool -> Avatar.Model
+physics avatar multiplier standing =
     { avatar
         | x =
             if isSideScrolling avatar then
                 0
             else
-                avatar.x + avatar.vx
+                avatar.x + (avatar.vx * multiplier)
         , vx =
             if avatar.x <= -ViewUtil.halfWidth && avatar.dir == Avatar.Left then
                 0
             else
                 avatar.vx
-        , y = avatar.y + avatar.vy
+        , y = avatar.y + (avatar.vy * multiplier)
         , vy =
             if standing && avatar.vy <= 0 then
                 0
             else
-                avatar.vy - 1 / 3
+                avatar.vy - (multiplier * 0.4)
         , score =
             if isSideScrolling avatar && avatar.vx /= 0 then
                 avatar.score + 1
@@ -202,11 +225,11 @@ extendPlatforms newPlatform platforms =
             platforms
 
 
-scrollPlatform : Avatar.Model -> GamePlatform.Model -> GamePlatform.Model
-scrollPlatform avatar platform =
+scrollPlatform : Avatar.Model -> Float -> GamePlatform.Model -> GamePlatform.Model
+scrollPlatform avatar motionMultiplier platform =
     { platform
         | x =
-            platform.x + -avatar.vx
+            platform.x - (avatar.vx * motionMultiplier)
     }
 
 
