@@ -168,19 +168,6 @@ unitAtRightEdge platform offset =
         >= rightEdge
 
 
-updatePhysics : Avatar.Model -> Bool -> Maybe GamePlatform.Model -> Avatar.Model
-updatePhysics avatar isColliding platform =
-    case platform of
-        Just platform ->
-            if isColliding then
-                physics (Avatar.updateStatus platform avatar) True
-            else
-                physics avatar True
-
-        Nothing ->
-            physics avatar False
-
-
 physics : Avatar.Model -> Float -> Bool -> Avatar.Model
 physics avatar multiplier standing =
     { avatar
