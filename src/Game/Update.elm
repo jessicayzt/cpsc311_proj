@@ -71,12 +71,12 @@ updateMotion game motionMultiplier =
             if avatarColliding && hasCollectible currentPlatform then
                 case currentPlatform of
                     Just currentPlatform ->
-                        replaceIf (\platform -> platform == currentPlatform) (removeCollectible currentPlatform) (updatePlatformUnits game.platforms)
+                        replaceIf (\platform -> platform == currentPlatform) (removeCollectible currentPlatform) (updatePlatformUnits game.platforms motionMultiplier)
 
                     Nothing ->
-                        updatePlatformUnits game.platforms
+                        updatePlatformUnits game.platforms motionMultiplier
             else
-                updatePlatformUnits game.platforms
+                updatePlatformUnits game.platforms motionMultiplier
 
         movedAvatar =
             case currentPlatform of
@@ -99,13 +99,13 @@ updateMotion game motionMultiplier =
     }
 
 
-updatePlatformUnits : List GamePlatform.Model -> List GamePlatform.Model
-updatePlatformUnits platforms =
-    List.map movePlatformUnit platforms
+updatePlatformUnits : List GamePlatform.Model -> Float -> List GamePlatform.Model
+updatePlatformUnits platforms motionMultiplier =
+    List.map ((\platform -> platform motionMultiplier) movePlatformUnit) platforms
 
 
-movePlatformUnit : GamePlatform.Model -> GamePlatform.Model
-movePlatformUnit platform =
+movePlatformUnit : Float -> GamePlatform.Model -> GamePlatform.Model
+movePlatformUnit motionMultiplier platform =
     case platform.unit of
         GamePlatform.Zombie status ->
             let
@@ -118,7 +118,7 @@ movePlatformUnit platform =
                         GamePlatform.Left ->
                             let
                                 newOffset =
-                                    Tuple.first status - 1
+                                    Tuple.first status - (1 * motionMultiplier)
 
                                 newDir =
                                     if unitAtLeftEdge platform newOffset then
@@ -131,7 +131,7 @@ movePlatformUnit platform =
                         _ ->
                             let
                                 newOffset =
-                                    Tuple.first status + 1
+                                    Tuple.first status + (1 * motionMultiplier)
 
                                 newDir =
                                     if unitAtRightEdge platform newOffset then
