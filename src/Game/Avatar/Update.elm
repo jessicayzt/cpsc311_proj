@@ -106,19 +106,22 @@ updateSpeed platform avatar =
             }
 
         _ ->
-            checkTimeLimit avatar
+            { multiplier = avatar.speed.multiplier
+            , timeLimit = avatar.speed.timeLimit
+            }
 
 
-checkTimeLimit : Model -> Speed
-checkTimeLimit avatar =
+checkTimeLimit : Model -> Float -> Speed
+checkTimeLimit avatar multiplier =
     if avatar.speed.timeLimit > 0 then
         { multiplier = avatar.speed.multiplier
-        , timeLimit = max (avatar.speed.timeLimit - 1) 0
+        , timeLimit = max (avatar.speed.timeLimit - (1 * multiplier)) 0
         }
     else
         { multiplier = 1.0
         , timeLimit = 0
         }
+
 
 updateShield : GamePlatform.Model -> Model -> Invincible
 updateShield platform avatar =
@@ -129,13 +132,16 @@ updateShield platform avatar =
           }
 
       _ ->
-          checkShieldTime avatar
+          { isInvincible = avatar.invincible.isInvincible
+          , timeLimit = avatar.invincible.timeLimit
+          }
 
-checkShieldTime : Model -> Invincible
-checkShieldTime avatar =
+
+checkShieldTime : Model -> Float -> Invincible
+checkShieldTime avatar multiplier  =
       if avatar.invincible.timeLimit > 0 then
           { isInvincible = True
-          , timeLimit = max (avatar.invincible.timeLimit - 1) 0
+          , timeLimit = max (avatar.invincible.timeLimit - (1 * multiplier)) 0
           }
       else
           { isInvincible = False

@@ -29,12 +29,12 @@ type Direction
 
 type alias Speed =
     { multiplier : Float
-    , timeLimit : Int
+    , timeLimit : Float
     }
 
 type alias Invincible =
     { isInvincible : Bool
-    , timeLimit : Int
+    , timeLimit : Float
     }
 
 

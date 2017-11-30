@@ -189,13 +189,13 @@ physics avatar multiplier standing =
                 avatar.vy - (multiplier * 0.4)
         , score =
             if isSideScrolling avatar && avatar.vx /= 0 then
-                avatar.score + 1
+                avatar.score + round (1 * multiplier)
             else
                 avatar.score
         , speed =
-            Avatar.checkTimeLimit avatar
+            Avatar.checkTimeLimit avatar multiplier
         , invincible =
-            Avatar.checkShieldTime avatar
+            Avatar.checkShieldTime avatar multiplier
     }
 
 

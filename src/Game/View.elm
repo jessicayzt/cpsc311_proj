@@ -31,7 +31,7 @@ content game =
         ++ "\nSCORE : "
         ++ scoreString game.avatar.score
         ++ "\nSHIELD : "
-        ++ toString game.avatar.invincible
+        ++ toString game.avatar.invincible.isInvincible
 
 
 textElement : Model -> Element
