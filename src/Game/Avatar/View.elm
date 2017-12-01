@@ -48,10 +48,16 @@ avatarForm avatar =
     if avatar.hp <= 0 then
         case avatar.dir of
             Left ->
-                toForm (image avatarHeight avatarHeight die_left)
+                group
+                    (alpha 0 (toForm (image avatarHeight avatarHeight die_right))
+                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight die_left)))
+                    )
 
             Right ->
-                toForm (image avatarHeight avatarHeight die_right)
+                group
+                    (alpha 0 (toForm (image avatarHeight avatarHeight die_left))
+                        :: List.singleton (alpha 1 (toForm (image avatarHeight avatarHeight die_right)))
+                    )
     else if avatar.vy /= 0 then
         case avatar.dir of
             Left ->
