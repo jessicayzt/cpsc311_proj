@@ -30,8 +30,6 @@ content game =
         ++ toString game.avatar.speed.multiplier
         ++ "\nSCORE : "
         ++ scoreString game.avatar.score
-        ++ "\nSHIELD : "
-        ++ toString game.avatar.invincible.isInvincible
 
 
 textElement : Model -> Element
@@ -80,9 +78,15 @@ elementGame game =
             height
             (toRender ++ [ gameOverForm ])
     else
-        collage width
-            height
-            toRender
+        if game.avatar.invincible.isInvincible then
+            collage width
+                height
+                (toRender ++ [ invincibilityForm ])
+        else
+            collage width
+                height
+                toRender
+
 
 
 gameOverForm : Form
@@ -92,6 +96,12 @@ gameOverForm =
         |> Text.color Color.orange
         |> formatText
         |> toForm
+
+invincibilityForm : Form
+invincibilityForm =
+    image 100 100 "../graphic/env/collectible/shield.png"
+        |> toForm
+        |> move (halfWidth - 80, halfHeight - 80)
 
 
 formatText : Text -> Element
