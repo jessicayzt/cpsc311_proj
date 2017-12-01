@@ -61,7 +61,7 @@ On a cold night in October, the night dripped with rain. The cold fall breeze co
 The hospital door burst open by Steve’s hands as he ushered Grace through. “What’s the problem?” shouted a nearby nurse. “We’re about to have our baby!” shouted Steve, nervously.  The doctors rushed them to a private room. Hours went by while Grace screamed out in pain, until the moment happened.
 
 
-“Push!” yelled the nurse. “Keep Pushing!” The doctors waited calmly, but grew more and more unsettled as the night went on. “A baby’s head can’t be that orange,” proclaimed one to another. “I’ve never seen anything like this in my whole life.” Grace kept pushing, on and on, until he emerged. The doctors stood there aghast, staring at the emergence. “It can’t be,” they said, almost in unison. “This isn’t possible,” murmured one. By now, there was a large crowd starting to form, composed of doctors and nurses. They stood quietly. None of their years of medical training could have prepared them for this moment.
+“Push!” yelled the nurse. “Keep pushing!” The doctors waited calmly, but grew more and more unsettled as the night went on. “A baby’s head can’t be that orange,” proclaimed one to another. “I’ve never seen anything like this in my whole life.” Grace kept pushing, on and on, until he emerged. The doctors stood there aghast, staring at the emergence. “It can’t be,” they said, almost in unison. “This isn’t possible,” murmured one. By now, there was a large crowd starting to form, composed of doctors and nurses. They stood quietly. None of their years of medical training could have prepared them for this moment.
 
 
 “How does someone give birth to a baby with a pumpkin head?”
@@ -124,7 +124,7 @@ The Adventures of Jack O’Lantern.
 —	_#1 Jack O’Lantern Fan_
 
 
-
+---
 
 
 Graphics from [Game Art 2D](http://www.gameart2d.com/freebies.html) under Creative Common Zero (CC0) outlined at [this license](http://www.gameart2d.com/license.html).
