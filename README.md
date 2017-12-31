@@ -67,7 +67,7 @@ The hospital door burst open by Steve’s hands as he ushered Grace through. “
 “How does someone give birth to a baby with a pumpkin head?”
 
 
-We’ll call him Jack, Steve said.
+"We’ll call him Jack," Steve said.
 
 
 ...
