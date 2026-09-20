@@ -20,7 +20,7 @@ view model =
     in
     case model.screen of
         StartScreen ->
-            body [ bodyStyle ]
+            div [ bodyStyle ]
                 [ div [ divStyle ]
                     [ h3 [] [ Html.text "[ Press ENTER to begin ]" ]
                     , Html.text "You are playing as: "
@@ -75,7 +75,13 @@ leftAlignColumn =
 bodyStyle : Attribute msg
 bodyStyle =
     Html.Attributes.style
-        [ ( "backgroundImage", "url(../graphic/env/startMenu.png)" )
+        [ ( "position", "fixed" )
+        , ( "top", "0" )
+        , ( "left", "0" )
+        , ( "width", "100%" )
+        , ( "height", "100%" )
+        , ( "backgroundColor", "#141c1d" )
+        , ( "backgroundImage", "url(../graphic/env/startMenu.png)" )
         , ( "background-repeat", "no-repeat" )
         , ( "background-position", "center" )
         ]

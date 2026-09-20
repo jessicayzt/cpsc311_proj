@@ -1,6 +1,6 @@
 # The Adventures of Jack O'Lantern
 
-## A platform game written in Elm. Play here: Link TBA
+## A platform game written in Elm. Play here: https://jessicayzt.github.io/cpsc311_proj/
 
 ![](/graphic/screenshot.png?raw=true)
 
