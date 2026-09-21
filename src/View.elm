@@ -39,6 +39,7 @@ view model =
         _ ->
             Game.elementGame model.game
                 |> container width height middle
+                |> Element.color screenBackground
                 |> toHtml
 
 
@@ -72,6 +73,21 @@ leftAlignColumn =
         [ ( "text-align", "left" ) ]
 
 
+{-| Dark tone matching the edge of the menu artwork; fills the page behind both screens. -}
+screenBackground : Color
+screenBackground =
+    Color.rgb 20 28 29
+
+
+toCssColor : Color -> String
+toCssColor color =
+    let
+        { red, green, blue } =
+            Color.toRgb color
+    in
+    "rgb(" ++ toString red ++ ", " ++ toString green ++ ", " ++ toString blue ++ ")"
+
+
 bodyStyle : Attribute msg
 bodyStyle =
     Html.Attributes.style
@@ -80,7 +96,7 @@ bodyStyle =
         , ( "left", "0" )
         , ( "width", "100%" )
         , ( "height", "100%" )
-        , ( "backgroundColor", "#141c1d" )
+        , ( "backgroundColor", toCssColor screenBackground )
         , ( "backgroundImage", "url(../graphic/env/startMenu.png)" )
         , ( "background-repeat", "no-repeat" )
         , ( "background-position", "center" )

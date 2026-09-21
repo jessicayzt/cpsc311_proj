@@ -15490,6 +15490,32 @@ var _user$project$View$inputStyle = _elm_lang$html$Html_Attributes$style(
 			}
 		}
 	});
+var _user$project$View$toCssColor = function (color) {
+	var _p0 = _elm_lang$core$Color$toRgb(color);
+	var red = _p0.red;
+	var green = _p0.green;
+	var blue = _p0.blue;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'rgb(',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(red),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				', ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(green),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						', ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(blue),
+							')'))))));
+};
+var _user$project$View$screenBackground = A3(_elm_lang$core$Color$rgb, 20, 28, 29);
 var _user$project$View$bodyStyle = _elm_lang$html$Html_Attributes$style(
 	{
 		ctor: '::',
@@ -15508,7 +15534,11 @@ var _user$project$View$bodyStyle = _elm_lang$html$Html_Attributes$style(
 						_0: {ctor: '_Tuple2', _0: 'height', _1: '100%'},
 						_1: {
 							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'backgroundColor', _1: '#141c1d'},
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'backgroundColor',
+								_1: _user$project$View$toCssColor(_user$project$View$screenBackground)
+							},
 							_1: {
 								ctor: '::',
 								_0: {ctor: '_Tuple2', _0: 'backgroundImage', _1: 'url(../graphic/env/startMenu.png)'},
@@ -15637,11 +15667,11 @@ var _user$project$View$highScoreTable = function (highScores) {
 		});
 };
 var _user$project$View$view = function (model) {
-	var _p0 = model.size;
-	var width = _p0.width;
-	var height = _p0.height;
-	var _p1 = model.screen;
-	if (_p1.ctor === 'StartScreen') {
+	var _p1 = model.size;
+	var width = _p1.width;
+	var height = _p1.height;
+	var _p2 = model.screen;
+	if (_p2.ctor === 'StartScreen') {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -15709,12 +15739,15 @@ var _user$project$View$view = function (model) {
 			});
 	} else {
 		return _evancz$elm_graphics$Element$toHtml(
-			A4(
-				_evancz$elm_graphics$Element$container,
-				width,
-				height,
-				_evancz$elm_graphics$Element$middle,
-				_user$project$Game_View$elementGame(model.game)));
+			A2(
+				_evancz$elm_graphics$Element$color,
+				_user$project$View$screenBackground,
+				A4(
+					_evancz$elm_graphics$Element$container,
+					width,
+					height,
+					_evancz$elm_graphics$Element$middle,
+					_user$project$Game_View$elementGame(model.game))));
 	}
 };
 
